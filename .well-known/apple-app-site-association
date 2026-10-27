@@ -2,17 +2,25 @@
   "applinks": {
     "details": [
       {
-        "appIDs": ["YPWP5W574Q.de.torchtechnology.slopetrack"],
+        "appIDs": [
+          "YPWP5W574Q.de.torchtechnology.slopetrack"
+        ],
         "components": [
-          { "/": "/d/*", "comment": "Tagesduell invite: /d/<CODE>, also /d/?c=<CODE>" },
-          { "/": "/f/*", "comment": "Friend invite: /f/<CODE>, also /f/?c=<CODE>" },
-          { "/": "/Ski/d/*", "comment": "GitHub Pages project path (only if this file is ever served from the user-site root)" },
-          { "/": "/Ski/f/*", "comment": "GitHub Pages project path" }
+          {
+            "/": "/d/*",
+            "comment": "Tagesduell invite: /d/<CODE>, also /d/?c=<CODE>"
+          },
+          {
+            "/": "/f/*",
+            "comment": "Friend invite: /f/<CODE>, also /f/?c=<CODE>"
+          }
         ]
       }
     ]
   },
   "webcredentials": {
-    "apps": ["YPWP5W574Q.de.torchtechnology.slopetrack"]
+    "apps": [
+      "YPWP5W574Q.de.torchtechnology.slopetrack"
+    ]
   }
 }
