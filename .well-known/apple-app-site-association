@@ -13,6 +13,10 @@
           {
             "/": "/f/*",
             "comment": "Friend invite: /f/<CODE>, also /f/?c=<CODE>"
+          },
+          {
+            "/": "/g/*",
+            "comment": "Gruppe invite: /g/<CODE>, also /g/?c=<CODE>"
           }
         ]
       }
