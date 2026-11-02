@@ -46,7 +46,6 @@ p{margin:0}
 .btn svg{width:20px;height:20px}
 .btn.dark{background:var(--ink);color:var(--paper)}
 .btn.goldbtn{background:var(--gold);color:var(--ink)}
-.btn[aria-disabled="true"]{cursor:default}
 .note{font-size:14px;color:var(--mid);margin-top:14px}
 
 .hero{position:relative;overflow:hidden;text-align:center;padding:calc(120px + env(safe-area-inset-top)) 20px 0;background:linear-gradient(180deg,rgba(244,241,234,.95) 0%,rgba(244,241,234,.86) 34%,rgba(244,241,234,.5) 48%,rgba(244,241,234,0) 66%),url(img/mountains.webp) center 40%/cover var(--paper)}
@@ -97,6 +96,21 @@ p{margin:0}
 .cta .icon{width:112px;height:112px;border-radius:26px;margin:0 auto 32px;box-shadow:0 18px 40px rgba(11,12,14,.18)}
 .cta .btn{margin-top:32px}
 
+.wl{max-width:480px;margin:32px auto 0}
+.wl-form{display:flex;gap:6px;padding:5px;background:#fff;border:1px solid rgba(11,12,14,.14);border-radius:999px;box-shadow:0 12px 32px rgba(11,12,14,.1)}
+.wl-form:focus-within{border-color:var(--ink)}
+.wl input{flex:1;min-width:0;height:50px;padding:0 20px;border:0;border-radius:999px;background:transparent;color:var(--ink);font:inherit;font-size:17px;outline:none}
+.wl input::placeholder{color:#868B94}
+.wl .btn{flex:none;min-width:0;height:50px;margin:0;padding:0 24px;font-family:inherit;cursor:pointer}
+.wl .btn:disabled{opacity:.6;cursor:default}
+.wl .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
+.wl-msg{margin-top:12px;font-size:15px;font-weight:600;color:#B3261E}
+.wl-msg:empty{display:none}
+.wl.done .wl-form{display:none}
+.wl.done .wl-msg{margin:0;padding:16px 22px;border-radius:24px;background:#fff;color:var(--ink);font-size:17px;box-shadow:0 12px 32px rgba(11,12,14,.1)}
+.wl.done .wl-msg:before{content:"✓";display:inline-block;margin-right:8px;color:#2E7D32}
+[hidden]{display:none!important}
+
 footer{padding:40px 20px calc(48px + env(safe-area-inset-bottom));text-align:center;font-size:14px;color:var(--muted)}
 footer nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 28px;margin-bottom:16px}
 footer a{color:var(--muted);text-decoration:none}
@@ -109,6 +123,12 @@ footer a:hover{color:var(--paper)}
   .split .photo .duel{right:-12px;bottom:-32px}
   .split .lead{margin:20px auto 0}
   .chips{justify-content:center}
+}
+@media (max-width:479px){
+  .wl-form{flex-direction:column;gap:10px;padding:0;background:none;border:0;box-shadow:none}
+  .wl input{flex:none;height:56px;background:#fff;border:1px solid rgba(11,12,14,.14)}
+  .wl input:focus{border-color:var(--ink)}
+  .wl .btn{width:100%;height:56px}
 }
 @media (max-width:599px){
   :root{--w:54vw}
@@ -136,8 +156,17 @@ footer a:hover{color:var(--paper)}
   <p class="kicker" data-en="Ski tracker for iPhone and Apple Watch">Ski-Tracker für iPhone und Apple Watch</p>
   <h1 data-en="Track<br>every run.">Tracke jede<br>Abfahrt.</h1>
   <p class="lead" data-en="Top speed, vertical and runs – recorded automatically. And at the end of the day, see who in your crew was fastest.">Top-Speed, Höhenmeter und Abfahrten – automatisch aufgezeichnet. Und am Abend siehst du, wer von euch am schnellsten war.</p>
-  <a class="btn dark store" href="#" aria-disabled="true">Bald im App Store</a>
-  <p class="note" data-en="Try it free for 3 days">3 Tage gratis testen</p>
+  <div class="wl pre">
+    <form class="wl-form" novalidate>
+      <input type="email" name="email" autocomplete="email" placeholder="Deine E-Mail-Adresse" aria-label="Deine E-Mail-Adresse" data-en-ph="Your email address">
+      <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn dark" type="submit" data-en="Join the waitlist">Auf die Warteliste</button>
+    </form>
+    <p class="wl-msg" role="status" aria-live="polite"></p>
+  </div>
+  <p class="note pre" data-en="Coming soon to the App Store. Just one email at launch, no newsletter. <a href='privacy.html#warteliste'>Privacy</a>">Bald im App Store. Nur eine Mail zum Start, kein Newsletter. <a href="privacy.html#warteliste">Datenschutz</a></p>
+  <a class="btn dark store live" href="#" data-en="Download on the App Store" hidden>Im App Store laden</a>
+  <p class="note live" data-en="Try it free for 3 days" hidden>3 Tage gratis testen</p>
   <div class="fan">
     <img class="l" data-shot="03" src="img/screens/de/03.webp" alt="Live-Ansicht: Top-Speed, Tempo, Höhenmeter" data-en-alt="Live view: top speed, pace, vertical" width="640" height="1391">
     <img class="c" data-shot="04" src="img/screens/de/04.webp" alt="Tagesbilanz mit Route, Top-Speed und Medaillen" data-en-alt="Day summary with route, top speed and medals" width="640" height="1391">
@@ -209,7 +238,16 @@ footer a:hover{color:var(--paper)}
   <img class="icon" src="img/app-icon.png" alt="" width="256" height="256" loading="lazy">
   <h2 data-en="Ready for<br>your first run?">Bereit für die<br>erste Abfahrt?</h2>
   <p class="lead" data-en="Try the yearly plan free for 3 days – with every feature.">Teste das Jahresabo 3 Tage gratis – mit allen Funktionen.</p>
-  <a class="btn dark store" href="#" aria-disabled="true">Bald im App Store</a>
+  <div class="wl pre">
+    <form class="wl-form" novalidate>
+      <input type="email" name="email" autocomplete="email" placeholder="Deine E-Mail-Adresse" aria-label="Deine E-Mail-Adresse" data-en-ph="Your email address">
+      <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
+      <button class="btn dark" type="submit" data-en="Join the waitlist">Auf die Warteliste</button>
+    </form>
+    <p class="wl-msg" role="status" aria-live="polite"></p>
+  </div>
+  <p class="note pre" data-en="Coming soon to the App Store. Just one email at launch, no newsletter. <a href='privacy.html#warteliste'>Privacy</a>">Bald im App Store. Nur eine Mail zum Start, kein Newsletter. <a href="privacy.html#warteliste">Datenschutz</a></p>
+  <a class="btn dark store live" href="#" data-en="Download on the App Store" hidden>Im App Store laden</a>
 </section>
 </main>
 
@@ -220,9 +258,37 @@ footer a:hover{color:var(--paper)}
 
 <script>
 // App Store URL — set once the App Store Connect record exists (same value as kAppStoreUrl in the app).
+// Until then the page shows the waitlist (.pre); with the URL the store buttons (.live).
 var STORE_URL='';
-var STORE={de:STORE_URL?'Im App Store laden':'Bald im App Store',en:STORE_URL?'Download on the App Store':'Coming soon to the App Store'};
-document.querySelectorAll('.store').forEach(function(b){if(STORE_URL){b.href=STORE_URL;b.removeAttribute('aria-disabled');}else{b.addEventListener('click',function(e){e.preventDefault();});}});
+if(STORE_URL){
+  document.querySelectorAll('.pre').forEach(function(el){el.hidden=true;});
+  document.querySelectorAll('.live').forEach(function(el){el.hidden=false;});
+  document.querySelectorAll('.store').forEach(function(b){b.href=STORE_URL;});
+}
+
+// Waitlist (Edge Function waitlist, migration 0026): one sign-up, no confirmation mail.
+var WAITLIST='https://svzmmpzevmpodcelzvit.supabase.co/functions/v1/waitlist';
+var WL={
+  de:{added:'Du stehst auf der Warteliste. Wir melden uns zum Start.',already:'Du stehst schon auf der Warteliste. Wir melden uns zum Start.',bad_email:'Bitte prüf deine E-Mail-Adresse.',error:'Das hat gerade nicht geklappt. Versuch es gleich noch mal.'},
+  en:{added:"You're on the waitlist. We'll be in touch at launch.",already:"You're already on the waitlist. We'll be in touch at launch.",bad_email:'Please check your email address.',error:"That didn't work. Please try again in a moment."}
+};
+function wlShow(box,k){var m=box.querySelector('.wl-msg');m.dataset.k=k;m.textContent=WL[lang][k];box.classList.toggle('done',k==='added'||k==='already');}
+document.querySelectorAll('.wl').forEach(function(box){
+  var f=box.querySelector('form'),b=f.querySelector('button');
+  f.addEventListener('submit',function(e){
+    e.preventDefault();
+    var email=f.email.value.trim();
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){wlShow(box,'bad_email');f.email.focus();return;}
+    b.disabled=true;
+    fetch(WAITLIST,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'join',email:email,lang:lang,company:f.company.value})})
+      .then(function(r){return r.json().catch(function(){return {};});})
+      .then(function(d){
+        if(d.status==='added'||d.status==='already'){document.querySelectorAll('.wl').forEach(function(x){wlShow(x,d.status);});}
+        else{wlShow(box,d.error==='bad_email'?'bad_email':'error');}
+      },function(){wlShow(box,'error');})
+      .then(function(){b.disabled=false;});
+  });
+});
 
 function setLang(l){
   document.documentElement.lang=l;
@@ -234,8 +300,12 @@ function setLang(l){
     if(el.dataset.deAlt===undefined)el.dataset.deAlt=el.alt;
     el.alt=l==='en'?el.dataset.enAlt:el.dataset.deAlt;
   });
+  document.querySelectorAll('[data-en-ph]').forEach(function(el){
+    if(el.dataset.dePh===undefined)el.dataset.dePh=el.placeholder;
+    el.placeholder=l==='en'?el.dataset.enPh:el.dataset.dePh;el.setAttribute('aria-label',el.placeholder);
+  });
   document.querySelectorAll('img[data-shot]').forEach(function(el){el.src='img/screens/'+l+'/'+el.dataset.shot+'.webp';});
-  document.querySelectorAll('.store').forEach(function(b){b.textContent=STORE[l];});
+  document.querySelectorAll('.wl-msg[data-k]').forEach(function(m){m.textContent=WL[l][m.dataset.k];});
   var t=document.getElementById('lang');t.textContent=l==='en'?'DE':'EN';t.lang=l==='en'?'de':'en';
   document.title=l==='en'?'SlopeTrack – Ski tracker for iPhone and Apple Watch':'SlopeTrack – Ski-Tracker für iPhone und Apple Watch';
 }
