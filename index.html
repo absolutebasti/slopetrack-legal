@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#F4F1EA">
+<meta name="apple-itunes-app" content="app-id=6827483140">
 <title>SlopeTrack – Ski-Tracker für iPhone und Apple Watch</title>
 <meta name="description" content="Top-Speed, Höhenmeter und Abfahrten – automatisch aufgezeichnet. Dazu Pistenpläne für über 4.000 Skigebiete, Tagesduelle und Ranglisten mit Freunden.">
 <meta property="og:type" content="website">
@@ -42,17 +43,12 @@ p{margin:0}
 .glyph path{fill:none;stroke:currentColor;stroke-width:88;stroke-linecap:round;stroke-linejoin:round}
 .lang{font:600 14px/1 -apple-system,BlinkMacSystemFont,Inter,sans-serif;color:var(--ink);background:rgba(255,255,255,.55);border:1px solid rgba(11,12,14,.12);border-radius:999px;padding:10px 14px;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
 
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-width:240px;height:56px;padding:0 28px;border-radius:999px;font-size:17px;font-weight:600;text-decoration:none;border:1px solid transparent}
-.btn svg{width:20px;height:20px}
-.btn.dark{background:var(--ink);color:var(--paper)}
-.btn.goldbtn{background:var(--gold);color:var(--ink)}
 .note{font-size:14px;color:var(--mid);margin-top:14px}
 
 .hero{position:relative;overflow:hidden;text-align:center;padding:calc(120px + env(safe-area-inset-top)) 20px 0;background:linear-gradient(180deg,rgba(244,241,234,.95) 0%,rgba(244,241,234,.86) 34%,rgba(244,241,234,.5) 48%,rgba(244,241,234,0) 66%),url(img/mountains.webp) center 40%/cover var(--paper)}
 .hero:after{content:"";position:absolute;left:0;right:0;bottom:0;height:calc(var(--w)*.95);background:var(--ink)}
 .hero h1{max-width:900px;margin:0 auto}
 .hero .kicker{color:var(--mid)}
-.hero .btn{margin-top:32px}
 .fan{position:relative;z-index:1;width:var(--w);margin:56px auto 0}
 .fan img{width:100%;aspect-ratio:1206/2622;border-radius:calc(var(--w)*.07);box-shadow:0 30px 70px rgba(11,12,14,.35),0 6px 18px rgba(11,12,14,.18)}
 .fan .c{position:relative;z-index:2}
@@ -94,22 +90,24 @@ p{margin:0}
 
 .cta{background:var(--paper);text-align:center;padding:104px 20px}
 .cta .icon{width:112px;height:112px;border-radius:26px;margin:0 auto 32px;box-shadow:0 18px 40px rgba(11,12,14,.18)}
-.cta .btn{margin-top:32px}
 
-.wl{max-width:480px;margin:32px auto 0}
-.wl-form{display:flex;gap:6px;padding:5px;background:#fff;border:1px solid rgba(11,12,14,.14);border-radius:999px;box-shadow:0 12px 32px rgba(11,12,14,.1)}
-.wl-form:focus-within{border-color:var(--ink)}
-.wl input{flex:1;min-width:0;height:50px;padding:0 20px;border:0;border-radius:999px;background:transparent;color:var(--ink);font:inherit;font-size:17px;outline:none}
-.wl input::placeholder{color:#868B94}
-.wl .btn{flex:none;min-width:0;height:50px;margin:0;padding:0 24px;font-family:inherit;cursor:pointer}
-.wl .btn:disabled{opacity:.6;cursor:default}
-.wl .hp{position:absolute;left:-9999px;width:1px;height:1px;opacity:0}
-.wl-msg{margin-top:12px;font-size:15px;font-weight:600;color:#B3261E}
-.wl-msg:empty{display:none}
-.wl.done .wl-form{display:none}
-.wl.done .wl-msg{margin:0;padding:16px 22px;border-radius:24px;background:#fff;color:var(--ink);font-size:17px;box-shadow:0 12px 32px rgba(11,12,14,.1)}
-.wl.done .wl-msg:before{content:"✓";display:inline-block;margin-right:8px;color:#2E7D32}
-[hidden]{display:none!important}
+/* Official Apple badge, unchanged artwork; Apple asks for ≥ 40 px height and clear space of ¼ its height. */
+.get{display:flex;align-items:center;justify-content:center;gap:32px;margin-top:32px}
+.badge{display:block;flex:none;border-radius:12px}
+.badge img{width:auto;height:60px}
+.qr{display:none;align-items:center;gap:14px;text-align:left;font-size:14px;line-height:1.4;color:var(--mid)}
+.qr img{width:84px;height:84px;border-radius:12px;box-shadow:0 8px 24px rgba(11,12,14,.12)}
+.qr strong{display:block;color:var(--ink)}
+@media (hover:hover) and (pointer:fine) and (min-width:900px){.qr{display:flex}}
+
+.getbar{position:fixed;z-index:20;left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:12px;padding:10px 10px 10px 12px;border:1px solid var(--hair);border-radius:22px;background:rgba(11,12,14,.92);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:var(--paper);box-shadow:0 16px 40px rgba(0,0,0,.35);transform:translateY(calc(100% + 24px));transition:transform .35s ease}
+.getbar.show{transform:none}
+.getbar .app{width:44px;height:44px;border-radius:11px;flex:none}
+.getbar p{flex:1;min-width:0;font-size:13px;line-height:1.3;color:var(--muted)}
+.getbar strong{display:block;font-size:15px;color:var(--paper)}
+.getbar .badge img{height:44px}
+@media (min-width:900px){.getbar{display:none}}
+@media (prefers-reduced-motion:reduce){.getbar{transition:none}}
 
 footer{padding:40px 20px calc(48px + env(safe-area-inset-bottom));text-align:center;font-size:14px;color:var(--muted)}
 footer nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 28px;margin-bottom:16px}
@@ -124,11 +122,8 @@ footer a:hover{color:var(--paper)}
   .split .lead{margin:20px auto 0}
   .chips{justify-content:center}
 }
-@media (max-width:479px){
-  .wl-form{flex-direction:column;gap:10px;padding:0;background:none;border:0;box-shadow:none}
-  .wl input{flex:none;height:56px;background:#fff;border:1px solid rgba(11,12,14,.14)}
-  .wl input:focus{border-color:var(--ink)}
-  .wl .btn{width:100%;height:56px}
+@media (max-width:899px){
+  footer{padding-bottom:calc(112px + env(safe-area-inset-bottom))}
 }
 @media (max-width:599px){
   :root{--w:54vw}
@@ -156,17 +151,11 @@ footer a:hover{color:var(--paper)}
   <p class="kicker" data-en="Ski tracker for iPhone and Apple Watch">Ski-Tracker für iPhone und Apple Watch</p>
   <h1 data-en="Track<br>every run.">Tracke jede<br>Abfahrt.</h1>
   <p class="lead" data-en="Top speed, vertical and runs – recorded automatically. And at the end of the day, see who in your crew was fastest.">Top-Speed, Höhenmeter und Abfahrten – automatisch aufgezeichnet. Und am Abend siehst du, wer von euch am schnellsten war.</p>
-  <div class="wl pre">
-    <form class="wl-form" novalidate>
-      <input type="email" name="email" autocomplete="email" placeholder="Deine E-Mail-Adresse" aria-label="Deine E-Mail-Adresse" data-en-ph="Your email address">
-      <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <button class="btn dark" type="submit" data-en="Join the waitlist">Auf die Warteliste</button>
-    </form>
-    <p class="wl-msg" role="status" aria-live="polite"></p>
+  <div class="get">
+    <a class="badge" href="https://apps.apple.com/app/id6827483140"><img data-badge src="img/badges/app-store-de.svg" alt="Laden im App Store" data-en-alt="Download on the App Store" width="180" height="60"></a>
+    <p class="qr"><img src="img/qr-app-store.svg" alt="" width="84" height="84"><span><strong data-en="Scan with your iPhone">Mit dem iPhone scannen</strong><span data-en="and load SlopeTrack straight away">und SlopeTrack direkt laden</span></span></p>
   </div>
-  <p class="note pre" data-en="Coming soon to the App Store. Just one email at launch, no newsletter. <a href='privacy.html#warteliste'>Privacy</a>">Bald im App Store. Nur eine Mail zum Start, kein Newsletter. <a href="privacy.html#warteliste">Datenschutz</a></p>
-  <a class="btn dark store live" href="#" data-en="Download on the App Store" hidden>Im App Store laden</a>
-  <p class="note live" data-en="Try it free for 3 days" hidden>3 Tage gratis testen</p>
+  <p class="note" data-en="Try the yearly plan free for 3 days">Jahresabo 3 Tage gratis testen</p>
   <div class="fan">
     <img class="l" data-shot="03" src="img/screens/de/03.webp" alt="Live-Ansicht: Top-Speed, Tempo, Höhenmeter" data-en-alt="Live view: top speed, pace, vertical" width="640" height="1391">
     <img class="c" data-shot="04" src="img/screens/de/04.webp" alt="Tagesbilanz mit Route, Top-Speed und Medaillen" data-en-alt="Day summary with route, top speed and medals" width="640" height="1391">
@@ -238,18 +227,18 @@ footer a:hover{color:var(--paper)}
   <img class="icon" src="img/app-icon.png" alt="" width="256" height="256" loading="lazy">
   <h2 data-en="Ready for<br>your first run?">Bereit für die<br>erste Abfahrt?</h2>
   <p class="lead" data-en="Try the yearly plan free for 3 days – with every feature.">Teste das Jahresabo 3 Tage gratis – mit allen Funktionen.</p>
-  <div class="wl pre">
-    <form class="wl-form" novalidate>
-      <input type="email" name="email" autocomplete="email" placeholder="Deine E-Mail-Adresse" aria-label="Deine E-Mail-Adresse" data-en-ph="Your email address">
-      <input class="hp" type="text" name="company" tabindex="-1" autocomplete="off" aria-hidden="true">
-      <button class="btn dark" type="submit" data-en="Join the waitlist">Auf die Warteliste</button>
-    </form>
-    <p class="wl-msg" role="status" aria-live="polite"></p>
+  <div class="get">
+    <a class="badge" href="https://apps.apple.com/app/id6827483140"><img data-badge src="img/badges/app-store-de.svg" alt="Laden im App Store" data-en-alt="Download on the App Store" width="180" height="60" loading="lazy"></a>
+    <p class="qr"><img src="img/qr-app-store.svg" alt="" width="84" height="84" loading="lazy"><span><strong data-en="Scan with your iPhone">Mit dem iPhone scannen</strong><span data-en="and load SlopeTrack straight away">und SlopeTrack direkt laden</span></span></p>
   </div>
-  <p class="note pre" data-en="Coming soon to the App Store. Just one email at launch, no newsletter. <a href='privacy.html#warteliste'>Privacy</a>">Bald im App Store. Nur eine Mail zum Start, kein Newsletter. <a href="privacy.html#warteliste">Datenschutz</a></p>
-  <a class="btn dark store live" href="#" data-en="Download on the App Store" hidden>Im App Store laden</a>
 </section>
 </main>
+
+<div class="getbar" id="getbar" aria-hidden="true">
+  <img class="app" src="img/app-icon.png" alt="" width="256" height="256" loading="lazy">
+  <p><strong>SlopeTrack</strong><span data-en="Free for 3 days">3 Tage gratis</span></p>
+  <a class="badge" href="https://apps.apple.com/app/id6827483140" tabindex="-1"><img data-badge src="img/badges/app-store-de.svg" alt="Laden im App Store" data-en-alt="Download on the App Store" width="132" height="44" loading="lazy"></a>
+</div>
 
 <footer class="dark">
   <nav aria-label="Seiten"><a href="support.html">Support</a><a href="privacy.html" data-en="Privacy">Datenschutz</a><a href="terms.html" data-en="Terms">Nutzung</a><a href="imprint.html" data-en="Imprint">Impressum</a></nav>
@@ -257,39 +246,6 @@ footer a:hover{color:var(--paper)}
 </footer>
 
 <script>
-// App Store URL — set once the App Store Connect record exists (same value as kAppStoreUrl in the app).
-// Until then the page shows the waitlist (.pre); with the URL the store buttons (.live).
-var STORE_URL='';
-if(STORE_URL){
-  document.querySelectorAll('.pre').forEach(function(el){el.hidden=true;});
-  document.querySelectorAll('.live').forEach(function(el){el.hidden=false;});
-  document.querySelectorAll('.store').forEach(function(b){b.href=STORE_URL;});
-}
-
-// Waitlist (Edge Function waitlist, migration 0026): one sign-up, no confirmation mail.
-var WAITLIST='https://svzmmpzevmpodcelzvit.supabase.co/functions/v1/waitlist';
-var WL={
-  de:{added:'Du stehst auf der Warteliste. Wir melden uns zum Start.',already:'Du stehst schon auf der Warteliste. Wir melden uns zum Start.',bad_email:'Bitte prüf deine E-Mail-Adresse.',error:'Das hat gerade nicht geklappt. Versuch es gleich noch mal.'},
-  en:{added:"You're on the waitlist. We'll be in touch at launch.",already:"You're already on the waitlist. We'll be in touch at launch.",bad_email:'Please check your email address.',error:"That didn't work. Please try again in a moment."}
-};
-function wlShow(box,k){var m=box.querySelector('.wl-msg');m.dataset.k=k;m.textContent=WL[lang][k];box.classList.toggle('done',k==='added'||k==='already');}
-document.querySelectorAll('.wl').forEach(function(box){
-  var f=box.querySelector('form'),b=f.querySelector('button');
-  f.addEventListener('submit',function(e){
-    e.preventDefault();
-    var email=f.email.value.trim();
-    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){wlShow(box,'bad_email');f.email.focus();return;}
-    b.disabled=true;
-    fetch(WAITLIST,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'join',email:email,lang:lang,company:f.company.value})})
-      .then(function(r){return r.json().catch(function(){return {};});})
-      .then(function(d){
-        if(d.status==='added'||d.status==='already'){document.querySelectorAll('.wl').forEach(function(x){wlShow(x,d.status);});}
-        else{wlShow(box,d.error==='bad_email'?'bad_email':'error');}
-      },function(){wlShow(box,'error');})
-      .then(function(){b.disabled=false;});
-  });
-});
-
 function setLang(l){
   document.documentElement.lang=l;
   document.querySelectorAll('[data-en]').forEach(function(el){
@@ -300,12 +256,8 @@ function setLang(l){
     if(el.dataset.deAlt===undefined)el.dataset.deAlt=el.alt;
     el.alt=l==='en'?el.dataset.enAlt:el.dataset.deAlt;
   });
-  document.querySelectorAll('[data-en-ph]').forEach(function(el){
-    if(el.dataset.dePh===undefined)el.dataset.dePh=el.placeholder;
-    el.placeholder=l==='en'?el.dataset.enPh:el.dataset.dePh;el.setAttribute('aria-label',el.placeholder);
-  });
   document.querySelectorAll('img[data-shot]').forEach(function(el){el.src='img/screens/'+l+'/'+el.dataset.shot+'.webp';});
-  document.querySelectorAll('.wl-msg[data-k]').forEach(function(m){m.textContent=WL[l][m.dataset.k];});
+  document.querySelectorAll('img[data-badge]').forEach(function(el){el.src='img/badges/app-store-'+l+'.svg';});
   var t=document.getElementById('lang');t.textContent=l==='en'?'DE':'EN';t.lang=l==='en'?'de':'en';
   document.title=l==='en'?'SlopeTrack – Ski tracker for iPhone and Apple Watch':'SlopeTrack – Ski-Tracker für iPhone und Apple Watch';
 }
@@ -318,6 +270,16 @@ var rail=document.getElementById('rail');
 function step(d){var img=rail.querySelector('img');rail.scrollBy({left:d*(img.offsetWidth+20),behavior:'smooth'});}
 document.getElementById('prev').addEventListener('click',function(){step(-1);});
 document.getElementById('next').addEventListener('click',function(){step(1);});
+
+// Phone download bar: shown while neither page badge is on screen.
+var bar=document.getElementById('getbar'),seen=new Set();
+if('IntersectionObserver' in window){
+  var io=new IntersectionObserver(function(es){
+    es.forEach(function(e){if(e.isIntersecting)seen.add(e.target);else seen.delete(e.target);});
+    bar.classList.toggle('show',seen.size===0);
+  });
+  document.querySelectorAll('main .badge').forEach(function(b){io.observe(b);});
+}
 </script>
 </body>
 </html>
