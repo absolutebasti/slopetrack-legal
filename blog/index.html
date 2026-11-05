@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0B1016">
+<meta name="robots" content="noindex">
+<title>Blog · SlopeTrack</title>
+<link rel="icon" href="/img/apple-touch-icon.png">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<style>
+@font-face{font-family:"Inter Display";font-weight:900;font-display:swap;src:url(/fonts/InterDisplay-Black.woff2) format("woff2")}
+@font-face{font-family:"Inter Display";font-weight:700;font-display:swap;src:url(/fonts/InterDisplay-Bold.woff2) format("woff2")}
+/* Palette: app/lib/app/theme/tokens.dart (bg, surface, hairline, text, onboardingBlue). */
+:root{--ink:#0B1016;--paper:#F3F7FA;--hair:#283744;--muted:#AAB8C3;--accent:#CAE8F6;--page:1200px;--gutter:max(20px,env(safe-area-inset-left));--bar:56px}
+@media (min-width:900px){:root{--gutter:32px;--bar:64px}}
+*{box-sizing:border-box}
+html{background:var(--ink);-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;display:flex;flex-direction:column;min-height:100vh;min-height:100svh;background:var(--ink);color:var(--paper);font:17px/1.5 -apple-system,BlinkMacSystemFont,Inter,"Segoe UI",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+.nav{padding-top:env(safe-area-inset-top);box-shadow:0 1px 0 var(--hair)}
+.nav,.logo{color:#fff}
+.bar{display:flex;align-items:center;gap:32px;max-width:calc(var(--page) + 2*var(--gutter));height:var(--bar);margin:0 auto;padding:0 var(--gutter)}
+.logo{display:inline-flex;align-items:center;gap:10px;text-decoration:none}
+.logo span{font:700 14px/1 "Inter Display",-apple-system,sans-serif;letter-spacing:.2em}
+.glyph{width:24px;height:24px;flex:none}
+.glyph path{fill:none;stroke:currentColor;stroke-width:88;stroke-linecap:round;stroke-linejoin:round}
+.links{display:none;gap:4px;margin:0;padding:0;list-style:none}
+.links a{display:block;padding:8px 12px;border-radius:999px;font-size:14px;font-weight:500;line-height:20px;color:rgba(255,255,255,.86);text-decoration:none;transition:background .2s ease,color .2s ease}
+.links a:hover,.links a[aria-current]{background:rgba(255,255,255,.12);color:#fff}
+@media (min-width:900px){.links{display:flex}}
+.cta{display:inline-flex;height:36px;align-items:center;margin-left:auto;padding:0 16px;border-radius:999px;background:var(--accent);color:#102938;font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap}
+main{flex:1;width:100%;max-width:calc(var(--page) + 2*var(--gutter));margin:0 auto;padding:clamp(56px,10vw,112px) var(--gutter)}
+.kicker{margin:0 0 14px;font:700 13px/1.4 "Inter Display",-apple-system,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--accent)}
+h1{margin:0;font:900 clamp(40px,7vw,72px)/1.02 "Inter Display",-apple-system,BlinkMacSystemFont,Inter,sans-serif;letter-spacing:-.02em}
+main p:last-child{max-width:30em;margin:18px 0 0;color:var(--muted)}
+footer{padding:32px var(--gutter) calc(32px + env(safe-area-inset-bottom));text-align:center;font-size:14px;color:var(--muted)}
+footer nav{display:flex;flex-wrap:wrap;justify-content:center;gap:0 12px;margin-bottom:8px}
+footer nav a{display:block;padding:11px 8px;text-decoration:none}
+footer a{color:inherit}
+footer p{margin:0}
+</style>
+</head>
+<body>
+<header class="nav">
+  <div class="bar">
+    <a class="logo" href="/" aria-label="SlopeTrack"><svg class="glyph" viewBox="0 0 1024 1024" aria-hidden="true"><path d="M212 592 L416 312 L812 752"/></svg><span>SLOPETRACK</span></a>
+    <ul class="links"><li><a href="/#funktionen" data-en="Features">Funktionen</a></li><li><a href="/#freunde" data-en="Friends">Freunde</a></li><li><a href="/#pistenplan" data-en="Piste maps">Pistenplan</a></li><li><a href="/blog/" aria-current="page">Blog</a></li><li><a href="/support.html">Support</a></li></ul>
+    <a class="cta" href="https://apps.apple.com/app/id6827483140" data-en="Get the app">App laden</a>
+  </div>
+</header>
+<main>
+  <p class="kicker">Blog</p>
+  <h1 data-en="Coming soon.">Kommt bald.</h1>
+  <p data-en="Stories from the mountain and news about SlopeTrack will appear here.">Hier erscheinen bald Geschichten vom Berg und Neues zu SlopeTrack.</p>
+</main>
+<footer><nav aria-label="Seiten"><a href="/" data-en="Home">Startseite</a><a href="/support.html">Support</a><a href="/privacy.html" data-en="Privacy">Datenschutz</a><a href="/terms.html" data-en="Terms">Nutzung</a><a href="/imprint.html" data-en="Legal notice">Impressum</a></nav><p>© 2026 TORCHTECHNOLOGY LTD</p></footer>
+<script>
+if(/[?&]lang=en\b/.test(location.search)||(!/[?&]lang=de\b/.test(location.search)&&(localStorage.getItem('lang')||(/^de\b/i.test(navigator.language||'de')?'de':'en'))==='en')){
+  document.documentElement.lang='en';
+  document.querySelectorAll('[data-en]').forEach(function(el){el.textContent=el.dataset.en;});
+}
+</script>
+</body>
+</html>

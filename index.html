@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0B0C0E">
+<meta name="theme-color" content="#0B1016">
 <meta name="apple-itunes-app" content="app-id=6827483140">
 <title>SlopeTrack – Ski-Tracker für iPhone und Apple Watch</title>
 <meta name="description" content="Top-Speed, Höhenmeter und Abfahrten – automatisch aufgezeichnet. Dazu Pistenpläne für über 4.000 Skigebiete, Tagesduelle und Ranglisten mit Freunden.">
@@ -19,187 +19,306 @@
 <link rel="preload" href="video/hero.webp" as="image" media="(max-aspect-ratio:1/1)">
 <link rel="preload" href="video/hero-wide.webp" as="image" media="(min-aspect-ratio:1/1)">
 <style>
+/* Mobile first: the rules below are the phone. Larger layouts only add on top, through min-width.
+   Breakpoints: 360 small phones end, 600 tablet, 900 desktop (also phones in landscape, for hero and stage). */
 @font-face{font-family:"Inter Display";font-weight:900;font-display:swap;src:url(fonts/InterDisplay-Black.woff2) format("woff2")}
 @font-face{font-family:"Inter Display";font-weight:700;font-display:swap;src:url(fonts/InterDisplay-Bold.woff2) format("woff2")}
-:root{--ink:#0B0C0E;--paper:#F4F1EA;--card:#15171B;--hair:#2A2D33;--muted:#A9ABB2;--gold:#E3C88C}
+/* Palette: app/lib/app/theme/tokens.dart (bg, surface, hairline, text, onboardingBlue). */
+:root{--ink:#0B1016;--paper:#F3F7FA;--card:#151F28;--hair:#283744;--muted:#AAB8C3;--accent:#CAE8F6;--page:1200px;--gutter:max(20px,env(safe-area-inset-left));--bar:56px}
 *{box-sizing:border-box}
-html{background:var(--ink);-webkit-text-size-adjust:100%;text-size-adjust:100%}
+html{background:var(--ink);-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-behavior:smooth}
 body{margin:0;background:var(--ink);color:var(--paper);font:17px/1.5 -apple-system,BlinkMacSystemFont,Inter,"Segoe UI",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-wrap:break-word}
 img{display:block;max-width:100%;height:auto}
 a{color:inherit}
 h1,h2,.num{font-family:"Inter Display",-apple-system,BlinkMacSystemFont,Inter,sans-serif;font-weight:900;letter-spacing:-.02em;margin:0}
-h1{font-size:clamp(52px,14vw,112px);line-height:.98}
-h2{font-size:clamp(34px,5vw,60px);line-height:1.04}
-h3{font-size:18px;line-height:1.3;margin:0 0 6px}
+h1{font-size:clamp(44px,14vw,112px);font-size:clamp(44px,min(14vw,11svh),112px);line-height:.98}
+h2{font-size:clamp(32px,9vw,60px);line-height:1.04}
+h3{font-size:17px;line-height:1.3;margin:0 0 4px}
 p{margin:0}
-.wrap{max-width:1120px;margin:0 auto;padding:0 max(20px,env(safe-area-inset-left))}
-.kicker{font:700 13px/1.4 "Inter Display",-apple-system,sans-serif;letter-spacing:.16em;text-transform:uppercase;margin:0 0 14px}
-.lead{font-size:clamp(17px,1.9vw,20px);line-height:1.45;margin-top:16px}
-.center{text-align:center}
-.gold{color:var(--gold)}
+.wrap{max-width:calc(var(--page) + 2*var(--gutter));margin:0 auto;padding:0 var(--gutter)}
+.kicker{font:700 12px/1.4 "Inter Display",-apple-system,sans-serif;letter-spacing:.14em;text-transform:uppercase;margin:0 0 12px}
+.lead{font-size:16px;line-height:1.45;margin-top:14px}
+.tint{color:var(--accent)}
 
 /* Clips: the poster stays visible until the video really plays (no flash, no play button in Low Power Mode). */
 .fill{position:absolute;top:0;left:0;width:100%;height:100%;max-width:none;object-fit:cover}
 video.fill{opacity:0;transition:opacity .5s ease}
 video.fill.on{opacity:1}
-.credit{position:absolute;z-index:3;right:10px;bottom:10px;padding:5px 10px;border-radius:999px;background:rgba(11,12,14,.62);color:#fff;font-size:11px;line-height:1;text-decoration:none;white-space:nowrap}
+.credit{position:absolute;z-index:3;right:10px;bottom:10px;padding:5px 10px;border-radius:999px;background:rgba(11,16,22,.62);color:#fff;font-size:11px;line-height:1;text-decoration:none;white-space:nowrap}
 
-.nav{position:absolute;top:0;left:0;right:0;z-index:5;display:flex;align-items:center;justify-content:space-between;max-width:1120px;margin:0 auto;padding:max(18px,env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) 0 max(20px,env(safe-area-inset-left))}
-.logo{display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:#fff}
-.logo span{font:700 15px/1 "Inter Display",-apple-system,sans-serif;letter-spacing:.2em}
-.glyph{width:26px;height:26px;flex:none}
+/* Top bar: see-through over the hero, solid once the page scrolls or the menu is open.
+   Phone: logo and menu; "App laden" only appears in the scroll stage, where the download bar stays out of the way. */
+.nav{position:fixed;top:0;left:0;right:0;z-index:30;padding-top:env(safe-area-inset-top);color:#fff;transition:background .25s ease,box-shadow .25s ease}
+.nav.solid{background:rgba(11,16,22,.86);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);box-shadow:0 1px 0 var(--hair)}
+.nav.open{background:var(--ink)}
+.bar{display:flex;align-items:center;gap:12px;max-width:calc(var(--page) + 2*var(--gutter));height:var(--bar);margin:0 auto;padding:0 var(--gutter)}
+.logo{display:inline-flex;align-items:center;gap:10px;text-decoration:none;color:#fff}
+.logo span{font:700 13px/1 "Inter Display",-apple-system,sans-serif;letter-spacing:.16em}
+.nav.staged .logo span{display:none}
+.glyph{width:24px;height:24px;flex:none}
 .glyph path{fill:none;stroke:currentColor;stroke-width:88;stroke-linecap:round;stroke-linejoin:round}
-.lang{font:600 14px/1 -apple-system,BlinkMacSystemFont,Inter,sans-serif;color:#fff;background:rgba(11,12,14,.28);border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:10px 14px;cursor:pointer;-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.links{display:none;gap:4px;margin:0;padding:0;list-style:none}
+.links a{display:block;padding:8px 12px;border-radius:999px;font-size:14px;font-weight:500;line-height:20px;color:rgba(255,255,255,.86);text-decoration:none;transition:background .2s ease,color .2s ease}
+.links a:hover{background:rgba(255,255,255,.12);color:#fff}
+.tools{display:flex;align-items:center;gap:8px;margin-left:auto}
+.tools .lang{display:none;height:36px;min-width:36px;padding:0 10px;border:1px solid rgba(255,255,255,.26);border-radius:999px;background:none;color:#fff;font:600 13px/1 -apple-system,BlinkMacSystemFont,Inter,sans-serif;cursor:pointer}
+/* 44 px touch target; the negative margin puts the icon itself on the page edge. */
+.burger{display:flex;align-items:center;justify-content:center;width:44px;height:44px;margin-right:-13px;padding:0;border:0;background:none;color:#fff;cursor:pointer}
+.burger svg{width:18px;height:18px;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;fill:none}
+.cta,.menu-get{align-items:center;justify-content:center;border-radius:999px;background:var(--accent);color:#102938;font-size:14px;font-weight:600;text-decoration:none;white-space:nowrap}
+.cta{display:none;position:relative;height:36px;padding:0 16px}
+.cta:after{content:"";position:absolute;inset:-4px 0}
+.nav.staged .cta{display:inline-flex}
+.menu{display:none;max-height:calc(100vh - var(--bar));max-height:calc(100svh - var(--bar));overflow-y:auto;margin:0;padding:0 var(--gutter) 16px;list-style:none}
+.nav.open .menu{display:block}
+.menu a:not(.menu-get),.menu .lang{display:block;width:100%;padding:13px 0;border:0;border-top:1px solid var(--hair);background:none;color:var(--paper);font:inherit;font-size:17px;line-height:24px;text-align:left;text-decoration:none;cursor:pointer}
+.menu li:first-child a{border-top:0}
+.menu .lang{color:var(--muted)}
+.menu-get{display:flex;height:48px;margin-top:8px;font-size:16px}
 
-.hero{position:relative;overflow:hidden;height:100vh;height:100svh;min-height:600px;display:flex;flex-direction:column;justify-content:space-between;text-align:center;color:#fff;padding:calc(92px + env(safe-area-inset-top)) 20px calc(44px + env(safe-area-inset-bottom))}
-.hero:before{content:"";position:absolute;z-index:1;inset:0;background:linear-gradient(180deg,rgba(11,12,14,.46) 0%,rgba(11,12,14,.3) 40%,rgba(11,12,14,0) 58%,rgba(11,12,14,.72) 88%,var(--ink) 100%)}
+/* Hero on a phone: the clip fills the top and fades into the page, the copy sits on the calm lower part. */
+.hero{--fade:210px;position:relative;overflow:hidden;height:100vh;height:100svh;min-height:520px;display:flex;align-items:flex-end;color:#fff;padding:calc(var(--bar) + 24px + env(safe-area-inset-top)) 0 calc(24px + env(safe-area-inset-bottom))}
+.media{position:absolute;top:0;left:0;right:0;bottom:var(--fade);overflow:hidden}
+.media .fill{object-position:50% 72%}
+.hero:before{content:"";position:absolute;z-index:1;inset:0;background:linear-gradient(180deg,rgba(11,16,22,.45) 0,rgba(11,16,22,0) 130px),linear-gradient(0deg,var(--ink) var(--fade),rgba(11,16,22,.76) calc(var(--fade) + 120px),rgba(11,16,22,0) calc(var(--fade) + 240px))}
 .hero picture,.end picture{position:absolute;inset:0}
-.hero>div{position:relative;z-index:2}
-.hero .kicker{color:#fff;opacity:.92}
-.hero h1,.hero .lead{text-shadow:0 1px 3px rgba(11,12,14,.3),0 1px 24px rgba(11,12,14,.4)}
-.hero .lead{max-width:520px;margin-left:auto;margin-right:auto}
-.note{font-size:14px;color:rgba(255,255,255,.82);margin-top:14px}
+.hero-in{position:relative;z-index:2;display:flex;flex-direction:column;gap:22px;width:100%;max-width:calc(var(--page) + 2*var(--gutter));margin:0 auto;padding:0 var(--gutter)}
+.hero .kicker{margin-bottom:10px;font-size:10px;letter-spacing:.05em;color:var(--accent)}
+.hero h1{text-shadow:0 2px 28px rgba(11,16,22,.35)}
+.hero .lead{max-width:30em;margin-top:12px}
+.hero .credit{bottom:auto;top:calc(var(--bar) + 4px + env(safe-area-inset-top));right:var(--gutter)}
 
-/* Official Apple badge, unchanged artwork; Apple asks for ≥ 40 px height and clear space of ¼ its height. */
-.get{display:flex;align-items:center;justify-content:center;gap:32px}
-.badge{display:block;flex:none;border-radius:12px}
-.badge img{width:auto;height:60px}
-.qr{display:none;align-items:center;gap:14px;text-align:left;font-size:14px;line-height:1.4;color:rgba(255,255,255,.82)}
-/* White padding completes the quiet zone of 4 modules that scanners expect. */
-.qr img{width:104px;height:104px;padding:8px;background:#fff;border-radius:12px}
-.qr strong{display:block;color:#fff}
-@media (hover:hover) and (pointer:fine) and (min-width:900px){.qr{display:flex}}
+/* Download block. Official Apple badge, unchanged artwork; Apple asks for ≥ 40 px height and clear space of ¼ its height.
+   Phone: just the badge. Desktop: a panel where badge top = QR top and text bottom = QR bottom. */
+.get{display:flex;align-items:center;gap:16px;text-align:left}
+.get-l{display:flex;flex-direction:column;align-items:flex-start;gap:10px;min-width:0}
+.badge{display:block;flex:none;border-radius:10px}
+.badge img{width:auto;height:52px}
+.note{display:none;font-size:14px;line-height:20px;color:rgba(255,255,255,.84)}
+.note strong{display:block;font-weight:600;color:#fff}
+.note span{display:block}
+.qr{display:none;flex:none;width:112px;height:112px;padding:8px;background:#fff;border-radius:12px}
 
-.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:920px;margin:0 auto;padding:56px 20px;text-align:center}
-.num{font-size:clamp(34px,5.4vw,60px);line-height:1}
-.stats p{font-size:15px;color:var(--muted);margin-top:10px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:920px;margin:0 auto;padding:40px 12px;text-align:center}
+.num{font-size:clamp(30px,8.6vw,60px);line-height:1}
+.stats p{font-size:13px;line-height:1.35;color:var(--muted);margin-top:8px}
 
-/* Scroll stage: the phone stays, clip, screen and copy change per chapter. */
+/* Scroll stage: the phone stays, clip, screen and copy change per chapter.
+   On a phone the frame runs off the bottom on purpose: the top of each app screen holds what matters. */
 .stage{position:relative;height:440vh;height:440svh}
-.pin{position:sticky;top:0;overflow:hidden;height:100vh;height:100lvh;display:flex;flex-direction:column;align-items:center;padding-top:calc(52px + env(safe-area-inset-top))}
-.copy{position:relative;z-index:2;flex:none;width:100%;height:clamp(186px,29svh,240px)}
-.ch{position:absolute;top:0;left:20px;right:20px;text-align:center;opacity:0;transform:translateY(14px);transition:opacity .4s ease,transform .4s ease;pointer-events:none}
+.pin{position:sticky;top:0;overflow:hidden;height:100vh;height:100lvh;display:flex;flex-direction:column;align-items:center;padding-top:calc(var(--bar) + 14px + env(safe-area-inset-top))}
+.pin:after{content:"";position:absolute;z-index:3;left:0;right:0;bottom:0;height:88px;background:linear-gradient(180deg,rgba(11,16,22,0),rgba(11,16,22,.92));pointer-events:none}
+.copy{position:relative;z-index:2;flex:none;display:grid;width:100%;padding:18px var(--gutter) 12px;pointer-events:none}
+.ch{grid-area:1/1;min-width:0;opacity:0;transform:translateY(14px);transition:opacity .4s ease,transform .4s ease;pointer-events:none}
 .ch.on{opacity:1;transform:none;pointer-events:auto}
-.ch h2{font-size:clamp(32px,9vw,60px)}
-.ch .kicker{margin-bottom:8px;color:var(--gold)}
-.ch .lead{font-size:16px;margin-top:10px;text-shadow:0 1px 12px rgba(11,12,14,.5)}
-.bars{position:absolute;top:-24px;left:50%;transform:translateX(-50%);display:flex;gap:6px}
+.ch h2{font-size:clamp(27px,7.8vw,48px);line-height:1.06}
+.ch .kicker{margin-bottom:6px;font-size:11px;color:var(--accent)}
+.ch .lead{font-size:15px;line-height:1.4;margin-top:8px;text-shadow:0 1px 12px rgba(11,16,22,.6)}
+.bars{position:absolute;top:0;left:var(--gutter);display:flex;gap:6px}
 .bars i{width:22px;height:3px;border-radius:2px;background:rgba(255,255,255,.3);transition:background .3s ease}
 .bars i.on{background:#fff}
 .visual{display:contents}
 .back{position:absolute;inset:0;z-index:0;background:var(--card);overflow:hidden}
 .scene{position:absolute;inset:0;opacity:0;transition:opacity .6s ease;pointer-events:none}
 .scene.on{opacity:1;pointer-events:auto}
-.scene:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,12,14,.8) 0%,rgba(11,12,14,.62) 34%,rgba(11,12,14,.14) 62%,rgba(11,12,14,.5) 100%)}
-.scene .credit{writing-mode:vertical-rl;right:6px;bottom:calc(112px + env(safe-area-inset-bottom));padding:10px 5px}
-.phone{position:relative;z-index:2;flex:none;width:min(68vw,42svh);padding:2.6%;background:#050506;border-radius:14.5%/6.7%;box-shadow:0 0 0 1px rgba(255,255,255,.24),0 30px 70px rgba(0,0,0,.55);container-type:inline-size}
+.scene:after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,16,22,.9) 0%,rgba(11,16,22,.78) 36%,rgba(11,16,22,.2) 62%,rgba(11,16,22,.45) 100%)}
+.scene .credit{top:calc(var(--bar) + 6px + env(safe-area-inset-top));right:var(--gutter);bottom:auto}
+.phone{position:relative;z-index:2;flex:none;width:min(68vw,44vh,340px);width:min(68vw,44svh,340px);padding:2.6%;background:#050506;border-radius:14.5%/6.7%;box-shadow:0 0 0 1px rgba(255,255,255,.24),0 30px 70px rgba(0,0,0,.55);container-type:inline-size}
 .glass{position:relative;aspect-ratio:1206/2622;border-radius:12.6%/5.8%;overflow:hidden;background:#000}
 .glass:after{content:"";position:absolute;z-index:3;top:1.2%;left:50%;transform:translateX(-50%);width:31%;height:3.3%;border-radius:999px;background:#000}
 .shot{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity .45s ease}
 .shot.on{opacity:1}
 .sb{position:absolute;z-index:2;top:1.5%;left:9%;right:8%;display:flex;align-items:center;justify-content:space-between;color:#fff;font:600 4.6cqw/1 -apple-system,BlinkMacSystemFont,Inter,sans-serif}
 .sb svg{width:17cqw;height:auto;fill:currentColor}
+.mark{position:absolute;left:0}
 
-.wall{padding:96px 0 104px}
-.reel{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:44px 20px 0}
+.wall{padding:72px 0}
+.reel{display:flex;gap:10px;overflow-x:auto;scroll-snap-type:x proximity;scroll-padding-left:var(--gutter);-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:28px var(--gutter) 0}
 .reel::-webkit-scrollbar{display:none}
-.clip{position:relative;flex:none;width:62vw;max-width:300px;aspect-ratio:9/16;border-radius:20px;overflow:hidden;background:var(--card);scroll-snap-align:center}
+.clip{position:relative;flex:none;width:68vw;max-width:300px;aspect-ratio:9/16;border-radius:20px;overflow:hidden;background:var(--card);scroll-snap-align:start}
 .clip .credit{right:auto;left:50%;transform:translateX(-50%)}
+
+/* Feature list on a phone: full-width rows, so the text gets the room instead of narrow columns. */
+.more{padding:0 0 72px}
+.grid{display:grid;grid-template-columns:1fr;gap:10px;margin-top:28px;text-align:left}
+.tile{display:grid;grid-template-columns:28px 1fr;column-gap:16px;background:var(--card);border:1px solid var(--hair);border-radius:20px;padding:18px}
+.tile svg{grid-row:1/3;width:28px;height:28px;color:var(--accent)}
+.tile svg *{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.tile p{font-size:15px;line-height:1.45;color:var(--muted)}
+
+.end{position:relative;overflow:hidden;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:72px var(--gutter)}
+.end:before{content:"";position:absolute;z-index:1;inset:0;background:linear-gradient(180deg,var(--ink) 0%,rgba(11,16,22,.6) 22%,rgba(11,16,22,.6) 78%,var(--ink) 100%)}
+.end>div{position:relative;z-index:2}
+.end .icon{width:80px;height:80px;border-radius:18px;margin:0 auto 24px;box-shadow:0 18px 40px rgba(11,16,22,.4)}
+.end .lead{margin-bottom:8px}
+.end .terms{max-width:30em;margin:0 auto 24px;font-size:13px;line-height:1.4;color:rgba(255,255,255,.82)}
+.end .get{justify-content:center}
+.end .get-l{align-items:center}
+
+.getbar{position:fixed;z-index:20;left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:12px;padding:10px 10px 10px 12px;border:1px solid var(--hair);border-radius:22px;background:rgba(11,16,22,.92);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:var(--paper);box-shadow:0 16px 40px rgba(0,0,0,.35);transform:translateY(calc(100% + 24px));transition:transform .35s ease}
+.getbar.show{transform:none}
+.getbar .app{width:44px;height:44px;border-radius:11px;flex:none}
+.getbar p{flex:1;min-width:0;font-size:13px;line-height:1.3;white-space:nowrap;color:var(--muted)}
+.getbar strong{display:block;font-size:14px;color:var(--paper)}
+.getbar .badge img{height:40px}
+/* Desktop: the QR code stays in reach, a laptop can't install the app. */
+.dock{position:fixed;z-index:20;right:24px;bottom:24px;display:none;align-items:center;gap:14px;padding:12px 18px 12px 12px;border:1px solid var(--hair);border-radius:20px;background:rgba(11,16,22,.92);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);font-size:14px;line-height:1.35;color:var(--muted);box-shadow:0 16px 40px rgba(0,0,0,.35);transform:translateY(calc(100% + 32px));transition:transform .35s ease}
+.dock.show{transform:none}
+.dock img{width:92px;height:92px;padding:6px;background:#fff;border-radius:10px}
+.dock strong{display:block;color:var(--paper)}
+
+footer{padding:40px var(--gutter) calc(112px + env(safe-area-inset-bottom));text-align:center;font-size:14px;color:var(--muted)}
+footer nav{display:flex;flex-wrap:wrap;justify-content:center;gap:0 12px;margin-bottom:12px}
+footer a{color:var(--muted);text-decoration:none}
+footer nav a{display:block;padding:11px 8px}
+footer a:hover{color:var(--paper)}
+.fine{max-width:44em;margin:10px auto 0;font-size:12px;line-height:1.45}
+.fine a{text-decoration:underline}
+
+@media (min-width:360px){
+  .logo span,.nav.staged .logo span{display:inline;font-size:14px;letter-spacing:.2em}
+  .hero{--fade:170px}
+  .getbar strong{font-size:15px}
+  .getbar .badge img{height:44px}
+  .hero .kicker{font-size:11.5px;letter-spacing:.08em}
+  .lead{font-size:17px}
+}
+
+@media (min-width:600px){
+  :root{--gutter:max(32px,env(safe-area-inset-left))}
+  .hero{--fade:300px}
+  .kicker,.hero .kicker,.ch .kicker{font-size:13px;letter-spacing:.16em}
+  .stats{gap:20px;padding:56px 20px}
+  .stats p{font-size:15px;margin-top:10px}
+  .wall{padding:96px 0}
+  .reel{padding-top:44px}
+  .more{padding-bottom:96px}
+  .grid{grid-template-columns:repeat(2,1fr);gap:16px;margin-top:40px}
+  .tile{border-radius:24px;padding:24px}
+  .ch h2{font-size:clamp(32px,6vw,48px)}
+  .ch .lead{font-size:17px}
+}
+
+/* Hero and stage side by side: desktop and phones held sideways. */
+@media (min-width:900px),(min-width:600px) and (orientation:landscape){
+  .hero{min-height:320px;padding-bottom:calc(32px + env(safe-area-inset-bottom))}
+  .media{bottom:0}
+  .media .fill{object-position:50% 50%}
+  .hero:before{background:linear-gradient(180deg,rgba(11,16,22,.4) 0%,rgba(11,16,22,0) 18%),linear-gradient(90deg,rgba(11,16,22,.62) 0%,rgba(11,16,22,.28) 44%,rgba(11,16,22,0) 70%),linear-gradient(180deg,rgba(11,16,22,0) 62%,rgba(11,16,22,.6) 88%,var(--ink) 100%)}
+  .hero-in{flex-direction:row;align-items:flex-end;justify-content:space-between;gap:48px}
+  .hero .get{flex:none}
+  .hero h1{font-size:clamp(44px,8.2vw,124px);font-size:clamp(44px,min(8.2vw,17svh),124px)}
+  .hero .lead{margin-top:18px}
+  .hero .credit{top:auto;bottom:10px;right:max(var(--gutter),calc((100vw - var(--page))/2))}
+
+  .pin{flex-direction:row;justify-content:center;gap:clamp(72px,14vw,220px);padding:var(--bar) 32px 0}
+  .pin:after{display:none}
+  .copy{flex:0 1 460px;display:block;height:min(360px,calc(100vh - var(--bar)));padding:0;pointer-events:auto}
+  .ch{position:absolute;left:0;right:0;top:50%;transform:translateY(calc(-50% + 14px))}
+  .ch.on{transform:translateY(-50%)}
+  .ch h2{font-size:clamp(26px,4.6vw,60px);font-size:clamp(26px,min(4.6vw,9svh),60px)}
+  .ch .kicker{margin-bottom:14px}
+  .ch .lead{font-size:clamp(15px,1.5vw,20px);margin-top:18px;text-shadow:none;color:var(--muted)}
+  .bars{top:0;left:0}
+  .visual{display:block;position:relative;flex:none;height:calc(100vh - var(--bar) - 48px);aspect-ratio:9/16}
+  .back{border-radius:32px}
+  .scene:after{background:none}
+  .scene .credit{right:12px;top:12px}
+  .phone{position:absolute;left:-30%;top:50%;transform:translateY(-50%);width:68%}
+  .bars{top:8px}
+}
+
+/* Phones held sideways: little height, so the clip gets wider and the phone frame still fits. */
+@media (min-width:600px) and (orientation:landscape) and (max-height:500px){
+  .hero .kicker{margin-bottom:6px;font-size:11px;letter-spacing:.08em}
+  .hero .lead{font-size:15px;margin-top:8px}
+  .visual{aspect-ratio:4/5;height:calc(100vh - var(--bar) - 24px)}
+  .phone{left:-24%;width:46%}
+  .ch .kicker{margin-bottom:6px;font-size:11px}
+  .ch .lead{margin-top:8px}
+}
+
+@media (min-width:900px){
+  :root{--bar:64px}
+  .bar{gap:32px}
+  h2{font-size:clamp(34px,5vw,60px)}
+  h3{font-size:18px;margin-bottom:6px}
+  .kicker{margin-bottom:14px}
+  .lead{font-size:clamp(17px,1.9vw,20px);margin-top:16px}
+  .num{font-size:clamp(34px,5.4vw,60px)}
+  .wall{padding:96px 0 104px}
+  .more{padding-bottom:112px}
+  .links{display:flex}
+  .tools .lang{display:block}
+  .cta{display:inline-flex}
+  .burger,.menu,.nav.open .menu{display:none}
+  .hero{padding-bottom:64px}
+  .hero .credit{bottom:20px}
+  .head{text-align:center}
+  .grid{grid-template-columns:repeat(4,1fr);margin-top:48px;text-align:center}
+  .tile{display:block;padding:28px 22px}
+  .tile svg{display:block;width:30px;height:30px;margin:0 auto 18px}
+  .getbar{display:none}
+  .end{padding:96px 20px}
+  .end .icon{width:96px;height:96px;border-radius:22px;margin-bottom:28px}
+  .end .terms{margin-bottom:32px}
+  footer{padding-bottom:calc(48px + env(safe-area-inset-bottom))}
+}
+
 @media (min-width:1100px){
   .reel{overflow:visible;padding:56px 12px 0}
   .clip{flex:1 1 0;width:auto;max-width:none}
 }
 
-.more{padding:0 0 112px}
-.more .lead{color:var(--muted);max-width:560px;margin:16px auto 0}
-.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:48px}
-.tile{background:var(--card);border:1px solid var(--hair);border-radius:24px;padding:28px 22px;text-align:center}
-.tile svg{width:30px;height:30px;color:var(--gold);margin:0 auto 18px;display:block}
-.tile svg *{fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
-.tile p{font-size:15px;line-height:1.5;color:var(--muted)}
-
-.end{position:relative;overflow:hidden;min-height:100vh;min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;color:#fff;padding:96px 20px}
-.end:before{content:"";position:absolute;z-index:1;inset:0;background:linear-gradient(180deg,var(--ink) 0%,rgba(11,12,14,.56) 22%,rgba(11,12,14,.56) 78%,var(--ink) 100%)}
-.end>div{position:relative;z-index:2}
-.end .icon{width:96px;height:96px;border-radius:22px;margin:0 auto 28px;box-shadow:0 18px 40px rgba(11,12,14,.4)}
-.end .lead{margin-bottom:32px}
-
-.getbar{position:fixed;z-index:20;left:max(12px,env(safe-area-inset-left));right:max(12px,env(safe-area-inset-right));bottom:calc(12px + env(safe-area-inset-bottom));display:flex;align-items:center;gap:12px;padding:10px 10px 10px 12px;border:1px solid var(--hair);border-radius:22px;background:rgba(11,12,14,.92);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);color:var(--paper);box-shadow:0 16px 40px rgba(0,0,0,.35);transform:translateY(calc(100% + 24px));transition:transform .35s ease}
-.getbar.show{transform:none}
-.getbar .app{width:44px;height:44px;border-radius:11px;flex:none}
-.getbar p{flex:1;min-width:0;font-size:13px;line-height:1.3;color:var(--muted)}
-.getbar strong{display:block;font-size:15px;color:var(--paper)}
-.getbar .badge img{height:44px}
-/* Desktop: the QR code stays in reach, a laptop can't install the app. */
-.dock{position:fixed;z-index:20;right:24px;bottom:24px;display:none;align-items:center;gap:14px;padding:12px 18px 12px 12px;border:1px solid var(--hair);border-radius:20px;background:rgba(11,12,14,.92);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);font-size:14px;line-height:1.35;color:var(--muted);box-shadow:0 16px 40px rgba(0,0,0,.35);transform:translateY(calc(100% + 32px));transition:transform .35s ease}
-.dock.show{transform:none}
-.dock img{width:92px;height:92px;padding:6px;background:#fff;border-radius:10px}
-.dock strong{display:block;color:var(--paper)}
-@media (hover:hover) and (pointer:fine) and (min-width:900px){.dock{display:flex}}
-@media (min-width:900px){.getbar{display:none}}
-
-footer{padding:40px 20px calc(48px + env(safe-area-inset-bottom));text-align:center;font-size:14px;color:var(--muted)}
-footer nav{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 28px;margin-bottom:16px}
-footer a{color:var(--muted);text-decoration:none}
-footer a:hover{color:var(--paper)}
-
-@media (min-width:900px){
-  .pin{flex-direction:row;justify-content:center;gap:clamp(90px,14vw,220px);padding:0 32px}
-  .copy{flex:0 1 460px;height:360px}
-  .ch{left:0;right:0;top:50%;text-align:left;transform:translateY(calc(-50% + 14px))}
-  .ch.on{transform:translateY(-50%)}
-  .ch h2{font-size:clamp(40px,4.6vw,60px)}
-  .ch .kicker{margin-bottom:14px}
-  .ch .lead{font-size:clamp(17px,1.5vw,20px);margin-top:18px;text-shadow:none;color:var(--muted)}
-  .bars{top:0;left:0;transform:none}
-  .visual{display:block;position:relative;flex:none;height:86vh;aspect-ratio:9/16}
-  .back{border-radius:32px}
-  .scene:after{background:none}
-  .scene .credit{writing-mode:horizontal-tb;right:12px;top:12px;bottom:auto;padding:5px 10px}
-  .phone{position:absolute;left:-30%;top:50%;transform:translateY(-50%);width:68%}
+@media (hover:hover) and (pointer:fine) and (min-width:900px){
+  .get{display:inline-flex;align-items:stretch;gap:20px;padding:16px;border:1px solid rgba(255,255,255,.2);border-radius:24px;background:rgba(11,16,22,.58);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px)}
+  .get-l,.end .get-l{flex-direction:column;align-items:flex-start;justify-content:space-between;gap:12px}
+  .note{display:block}
+  .qr{display:block}
+  .dock{display:flex}
 }
-@media (max-width:899px){
-  .grid{grid-template-columns:repeat(2,1fr)}
-  footer{padding-bottom:calc(112px + env(safe-area-inset-bottom))}
-}
-@media (max-width:599px){
-  .hero .kicker{font-size:12px;letter-spacing:.1em}
-  .stats{gap:8px;padding:44px 12px}
-  .stats p{font-size:13px}
-  .grid{gap:12px}
-  .tile{padding:22px 14px;border-radius:20px}
-  .tile p{font-size:14px}
-  .wall{padding:80px 0}
-  .more{padding-bottom:80px}
-}
+
 @media (prefers-reduced-motion:reduce){
-  video.fill,.ch,.scene,.shot,.getbar,.dock{transition:none}
+  video.fill,.ch,.scene,.shot,.getbar,.dock,.nav{transition:none}
+  html{scroll-behavior:auto}
 }
 </style>
 </head>
 <body>
-<header class="nav">
-  <a class="logo" href="./" aria-label="SlopeTrack"><svg class="glyph" viewBox="0 0 1024 1024" aria-hidden="true"><path d="M212 592 L416 312 L812 752"/></svg><span>SLOPETRACK</span></a>
-  <button class="lang" id="lang" type="button" lang="en">EN</button>
+<header class="nav" id="nav">
+  <div class="bar">
+    <a class="logo" href="./" aria-label="SlopeTrack"><svg class="glyph" viewBox="0 0 1024 1024" aria-hidden="true"><path d="M212 592 L416 312 L812 752"/></svg><span>SLOPETRACK</span></a>
+    <ul class="links"><li><a href="#funktionen" data-en="Features">Funktionen</a></li><li><a href="#freunde" data-en="Friends">Freunde</a></li><li><a href="#pistenplan" data-en="Piste maps">Pistenplan</a></li><li><a href="blog/">Blog</a></li><li><a href="support.html">Support</a></li></ul>
+    <div class="tools">
+      <button class="lang" type="button" lang="en">EN</button>
+      <a class="cta" href="https://apps.apple.com/app/id6827483140" data-en="Get the app">App laden</a>
+      <button class="burger" id="burger" type="button" aria-label="Menü" aria-expanded="false" aria-controls="menu"><svg viewBox="0 0 18 18" aria-hidden="true"><path d="M2 5h14M2 13h14"/></svg></button>
+    </div>
+  </div>
+  <ul class="menu" id="menu"><li><a href="#funktionen" data-en="Features">Funktionen</a></li><li><a href="#freunde" data-en="Friends">Freunde</a></li><li><a href="#pistenplan" data-en="Piste maps">Pistenplan</a></li><li><a href="blog/">Blog</a></li><li><a href="support.html">Support</a></li><li><button class="lang" data-long type="button" lang="en">English</button></li><li><a class="menu-get" href="https://apps.apple.com/app/id6827483140" data-en="Get the app">App laden</a></li></ul>
 </header>
 
 <main>
 <section class="hero">
-  <picture><source media="(min-aspect-ratio:1/1)" srcset="video/hero-wide.webp"><img class="fill" src="video/hero.webp" alt="" width="720" height="1280" fetchpriority="high"></picture>
-  <video class="fill" data-src="video/hero.mp4" data-wide="video/hero-wide.mp4" muted loop playsinline preload="none" disablepictureinpicture disableremoteplayback aria-hidden="true"></video>
-  <div>
-    <p class="kicker" data-en="The ski tracker for iPhone and Apple Watch">Ski-Tracker für iPhone und Apple Watch</p>
-    <h1 data-en="Track<br>every run.">Tracke jede<br>Abfahrt.</h1>
-    <p class="lead" data-en="Top speed, vertical and runs, logged automatically.">Top-Speed, Höhenmeter und Abfahrten – automatisch aufgezeichnet.</p>
+  <div class="media">
+    <picture><source media="(min-aspect-ratio:1/1)" srcset="video/hero-wide.webp"><img class="fill" src="video/hero.webp" alt="" width="720" height="1280" fetchpriority="high"></picture>
+    <video class="fill" data-src="video/hero.mp4" data-wide="video/hero-wide.mp4" muted loop playsinline preload="none" disablepictureinpicture disableremoteplayback aria-hidden="true"></video>
   </div>
-  <div>
-    <div class="get">
-      <a class="badge" href="https://apps.apple.com/app/id6827483140"><img data-badge src="img/badges/app-store-de.svg" alt="Laden im App Store" data-en-alt="Download on the App Store" width="180" height="60"></a>
-      <p class="qr"><img src="img/qr-app-store.svg" alt="" width="84" height="84"><span><strong data-en="Scan with your iPhone">Mit dem iPhone scannen</strong><span data-en="to get SlopeTrack">und SlopeTrack direkt laden</span></span></p>
+  <div class="hero-in">
+    <div>
+      <p class="kicker" data-en="The ski tracker for iPhone and Apple Watch">Ski-Tracker für iPhone und Apple Watch</p>
+      <h1 data-en="Track<br>every run.">Tracke jede<br>Abfahrt.</h1>
+      <p class="lead" data-en="Top speed, vertical and runs, logged automatically.">Top-Speed, Höhenmeter und Abfahrten – automatisch aufgezeichnet.</p>
     </div>
-    <p class="note" data-en="Try the yearly plan free for 3 days">Jahresabo 3 Tage gratis testen</p>
+    <div class="get">
+      <div class="get-l">
+        <a class="badge" href="https://apps.apple.com/app/id6827483140"><img data-badge src="img/badges/app-store-de.svg" alt="Laden im App Store" data-en-alt="Download on the App Store" width="156" height="52"></a>
+        <p class="note"><strong data-en="Scan with your iPhone">Mit dem iPhone scannen</strong><span data-en="to get SlopeTrack">und SlopeTrack direkt laden</span></p>
+      </div>
+      <img class="qr" src="img/qr-app-store.svg" alt="" width="112" height="112">
+    </div>
   </div>
-  <a class="credit" href="https://www.instagram.com/adrien.laaame/" target="_blank" rel="noopener">Video: @adrien.laaame</a>
+  <a class="credit" href="https://www.instagram.com/josh_plumb/" target="_blank" rel="noopener">Video: @josh_plumb</a>
 </section>
 
 <div class="stats">
@@ -209,6 +328,7 @@ footer a:hover{color:var(--paper)}
 </div>
 
 <section class="stage" id="stage">
+  <span class="mark" id="funktionen" style="top:0"></span><span class="mark" id="freunde" style="top:90vh"></span><span class="mark" id="pistenplan" style="top:175vh"></span>
   <div class="pin">
     <div class="copy">
       <div class="bars" aria-hidden="true"><i class="on"></i><i></i><i></i><i></i></div>
@@ -254,7 +374,7 @@ footer a:hover{color:var(--paper)}
 </section>
 
 <section class="wall">
-  <div class="wrap center">
+  <div class="wrap head">
     <h2 data-en="Made for days<br>like these.">Für genau<br>solche Tage.</h2>
   </div>
   <div class="reel">
@@ -268,14 +388,14 @@ footer a:hover{color:var(--paper)}
 </section>
 
 <section class="more">
-  <div class="wrap center">
-    <p class="kicker gold" data-en="Everything in one app">Alles in einer App</p>
+  <div class="wrap head">
+    <p class="kicker tint" data-en="Everything in one app">Alles in einer App</p>
     <h2 data-en="Built for your<br>day on the mountain.">Gemacht für deinen<br>Tag am Berg.</h2>
     <div class="grid">
       <div class="tile"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="6.5" y="6" width="11" height="12" rx="3"/><path d="M9 6l.7-3h4.6L15 6M9 18l.7 3h4.6l.7-3"/><path d="M12 9.5V12l1.6 1.2"/></svg><h3>Apple Watch</h3><p data-en="Start from your wrist and see live stats and heart rate. Every ski day saves to Apple Health.">Start am Handgelenk, Live-Werte und Herzfrequenz – gespeichert in Apple Health.</p></div>
       <div class="tile"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="15" r="5.5"/><path d="M8.6 10.6 6 3h4l2 5.5L14 3h4l-2.6 7.6"/></svg><h3 data-en="Medals and levels">Medaillen &amp; Level</h3><p data-en="Points for vertical, distance and runs, plus streaks for back-to-back ski days.">Punkte für Höhenmeter, Kilometer und Abfahrten, Serien für Skitage am Stück.</p></div>
       <div class="tile"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 20h18"/><path d="M9.5 20V7h5v13"/><path d="M4 20v-8h5.5M14.5 20v-5H20v5"/></svg><h3 data-en="Country leaderboard">Länderwertung</h3><p data-en="Ski for your country on the season leaderboard.">Tritt in der Saisonwertung für dein Land an.</p></div>
-      <div class="tile"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.500" width="14" height="10" rx="2.500"/><path d="M8 10.500V8a4 4 0 0 1 8 0v2.500"/></svg><h3 data-en="Your data">Deine Daten</h3><p data-en="Your ski days are backed up in the EU. You only appear on leaderboards if you opt in.">Deine Skitage werden in der EU gesichert. In den Ranglisten erscheinst du nur, wenn du es selbst einschaltest.</p></div>
+      <div class="tile"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.500" width="14" height="10" rx="2.500"/><path d="M8 10.500V8a4 4 0 0 1 8 0v2.500"/></svg><h3 data-en="Your data">Deine Daten</h3><p data-en="Your ski days are backed up in the EU. You only appear on public leaderboards if you opt in.">Deine Skitage werden in der EU gesichert. In öffentlichen Ranglisten erscheinst du nur, wenn du es selbst einschaltest.</p></div>
     </div>
   </div>
 </section>
@@ -286,10 +406,14 @@ footer a:hover{color:var(--paper)}
   <div>
     <img class="icon" src="img/app-icon.png" alt="" width="256" height="256" loading="lazy">
     <h2 data-en="Ready for<br>your first run?">Bereit für die<br>erste Abfahrt?</h2>
-    <p class="lead" data-en="Try the yearly plan free for 3 days, everything included.">Teste das Jahresabo 3 Tage gratis – mit allen Funktionen.</p>
+    <p class="lead" data-en="Try it for free, everything included.">Gratis testen – mit allen Funktionen.</p>
+    <p class="terms" data-en="3 days free, then a paid yearly subscription unless you cancel. For Apple Accounts that have not used the trial yet.">3 Tage gratis, danach kostenpflichtiges Jahresabo, wenn du nicht kündigst. Für Apple-Accounts, die den Test noch nicht genutzt haben.</p>
     <div class="get">
-      <a class="badge" href="https://apps.apple.com/app/id6827483140"><img data-badge src="img/badges/app-store-de.svg" alt="Laden im App Store" data-en-alt="Download on the App Store" width="180" height="60" loading="lazy"></a>
-      <p class="qr"><img src="img/qr-app-store.svg" alt="" width="84" height="84" loading="lazy"><span><strong data-en="Scan with your iPhone">Mit dem iPhone scannen</strong><span data-en="to get SlopeTrack">und SlopeTrack direkt laden</span></span></p>
+      <div class="get-l">
+        <a class="badge" href="https://apps.apple.com/app/id6827483140"><img data-badge src="img/badges/app-store-de.svg" alt="Laden im App Store" data-en-alt="Download on the App Store" width="156" height="52" loading="lazy"></a>
+        <p class="note"><strong data-en="Scan with your iPhone">Mit dem iPhone scannen</strong><span data-en="to get SlopeTrack">und SlopeTrack direkt laden</span></p>
+      </div>
+      <img class="qr" src="img/qr-app-store.svg" alt="" width="112" height="112" loading="lazy">
     </div>
   </div>
   <a class="credit" href="https://www.instagram.com/adrien.laaame/" target="_blank" rel="noopener">Video: @adrien.laaame</a>
@@ -298,7 +422,7 @@ footer a:hover{color:var(--paper)}
 
 <div class="getbar" id="getbar" aria-hidden="true">
   <img class="app" src="img/app-icon.png" alt="" width="256" height="256" loading="lazy">
-  <p><strong>SlopeTrack</strong><span data-en="3-day free trial">3 Tage gratis</span></p>
+  <p><strong>SlopeTrack</strong><span data-en="Ski tracker">Ski-Tracker</span></p>
   <a class="badge" href="https://apps.apple.com/app/id6827483140" tabindex="-1"><img data-badge src="img/badges/app-store-de.svg" alt="Laden im App Store" data-en-alt="Download on the App Store" width="132" height="44" loading="lazy"></a>
 </div>
 <div class="dock" id="dock" aria-hidden="true">
@@ -307,8 +431,10 @@ footer a:hover{color:var(--paper)}
 </div>
 
 <footer>
-  <nav aria-label="Seiten"><a href="support.html">Support</a><a href="privacy.html" data-en="Privacy">Datenschutz</a><a href="terms.html" data-en="Terms">Nutzung</a><a href="imprint.html" data-en="Legal notice">Impressum</a></nav>
+  <nav aria-label="Seiten"><a href="blog/">Blog</a><a href="support.html">Support</a><a href="privacy.html" data-en="Privacy">Datenschutz</a><a href="terms.html" data-en="Terms">Nutzung</a><a href="imprint.html" data-en="Legal notice">Impressum</a></nav>
   <p>© 2026 TORCHTECHNOLOGY LTD · <a href="mailto:hello@torchtechnology.de">hello@torchtechnology.de</a></p>
+  <p class="fine" data-en="App screens show sample data. Map data: © Apple, © <a href='https://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors, OpenSkiMap.">App-Screens mit Beispieldaten. Kartendaten: © Apple, © <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>-Mitwirkende, OpenSkiMap.</p>
+  <p class="fine" lang="en">Apple, the Apple logo, iPhone and Apple Watch are trademarks of Apple Inc., registered in the U.S. and other countries. App Store is a service mark of Apple Inc.</p>
 </footer>
 
 <script>
@@ -324,13 +450,23 @@ function setLang(l){
   });
   document.querySelectorAll('img[data-shot]').forEach(function(el){el.src='img/app/'+l+'/'+el.dataset.shot+'.webp';});
   document.querySelectorAll('img[data-badge]').forEach(function(el){el.src='img/badges/app-store-'+l+'.svg';});
-  var t=document.getElementById('lang');t.textContent=l==='en'?'DE':'EN';t.lang=l==='en'?'de':'en';
+  document.querySelectorAll('.lang').forEach(function(t){var en=l==='en';t.textContent=t.hasAttribute('data-long')?(en?'Deutsch':'English'):(en?'DE':'EN');t.lang=en?'de':'en';});
   document.title=l==='en'?'SlopeTrack – Ski tracker for iPhone and Apple Watch':'SlopeTrack – Ski-Tracker für iPhone und Apple Watch';
 }
 var q=/[?&]lang=(de|en)\b/.exec(location.search);
 var lang=q?q[1]:(localStorage.getItem('lang')||(/^de\b/i.test(navigator.language||'de')?'de':'en'));
 setLang(lang);
-document.getElementById('lang').addEventListener('click',function(){lang=lang==='en'?'de':'en';localStorage.setItem('lang',lang);setLang(lang);});
+document.querySelectorAll('.lang').forEach(function(t){t.addEventListener('click',function(){lang=lang==='en'?'de':'en';localStorage.setItem('lang',lang);setLang(lang);});});
+
+// Top bar: solid once the page scrolls or the menu is open.
+var nav=document.getElementById('nav'),burger=document.getElementById('burger');
+function navSolid(){nav.classList.toggle('solid',scrollY>24||nav.classList.contains('open'));}
+function menu(open){nav.classList.toggle('open',open);burger.setAttribute('aria-expanded',open);navSolid();}
+burger.addEventListener('click',function(){menu(!nav.classList.contains('open'));});
+document.getElementById('menu').addEventListener('click',function(e){if(e.target.closest('a'))menu(false);});
+addEventListener('keydown',function(e){if(e.key==='Escape')menu(false);});
+addEventListener('scroll',navSolid,{passive:true});
+navSolid();
 
 // Clips: no sound, loaded shortly before they come into view, only the visible ones play.
 // Reduced motion or Save-Data: posters only.
@@ -374,10 +510,17 @@ if('IntersectionObserver' in window){
   document.querySelectorAll('video').forEach(function(v){if(!stage.contains(v)){near.observe(v);vis.observe(v);}});
   near.observe(clips[0]);
   new IntersectionObserver(function(es){stageOn=es[0].isIntersecting;syncClips();}).observe(stage);
+  // In the scroll stage the phone bar would cover the app screen, so the top bar takes over the download there.
+  var staged=false;
+  function getPoints(){
+    bar.classList.toggle('show',seen.size===0&&!staged);
+    dock.classList.toggle('show',seen.size===0);
+    nav.classList.toggle('staged',staged);
+  }
+  new IntersectionObserver(function(es){staged=es[0].isIntersecting;getPoints();},{rootMargin:'-50% 0px -50% 0px'}).observe(stage);
   var io=new IntersectionObserver(function(es){
     es.forEach(function(e){if(e.isIntersecting)seen.add(e.target);else seen.delete(e.target);});
-    bar.classList.toggle('show',seen.size===0);
-    dock.classList.toggle('show',seen.size===0);
+    getPoints();
   });
   document.querySelectorAll('main .badge').forEach(function(b){io.observe(b);});
 }
