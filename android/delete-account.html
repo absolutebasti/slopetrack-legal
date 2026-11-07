@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0B0C0E">
+<title>Konto löschen / Delete account · SlopeTrack</title>
+<link rel="icon" href="/img/apple-touch-icon.png">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<style>
+:root{--bg:#0B0C0E;--card:#15171B;--ink:#F4F1EA;--muted:#A9ABB2;--accent:#E3C88C;--hair:#2A2D33;--onaccent:#0B0C0E}
+*{box-sizing:border-box}
+html{background:var(--bg);-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 -apple-system,BlinkMacSystemFont,Inter,"Segoe UI",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;overflow-wrap:break-word}
+main{max-width:680px;margin:0 auto;padding:max(12px,env(safe-area-inset-top)) max(20px,env(safe-area-inset-right)) calc(112px + env(safe-area-inset-bottom)) max(20px,env(safe-area-inset-left))}
+a{color:var(--accent)}
+p{margin:0 0 12px}
+.top{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:6px 28px;padding:8px 0 6px;border-bottom:1px solid var(--hair);margin:0 0 40px}
+.brand{display:inline-flex;align-items:center;gap:10px;padding:4px 0;color:var(--ink);text-decoration:none}
+.brand strong{font-size:18px;letter-spacing:.02em}
+.mark{width:28px;height:28px;border-radius:8px;flex:none;background:#F4F1EA url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cpath d='M212 592 L416 312 L812 752' fill='none' stroke='%230B0C0E' stroke-width='96' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat}
+.top nav{display:flex;gap:24px}
+.top nav a{color:var(--muted);text-decoration:none;font-size:15px;line-height:20px;padding:12px 0}
+.top nav a:hover,.top nav a[aria-current="page"]{color:var(--ink)}
+.top nav a[aria-current="page"]{text-decoration:underline;text-decoration-color:var(--accent);text-decoration-thickness:2px;text-underline-offset:8px}
+@media (max-width:599px){.top nav{flex:1 0 100%;justify-content:space-between;gap:0}}
+@media (max-width:359px){.top nav a{font-size:14px}}
+h1{font-size:clamp(28px,7.5vw,36px);line-height:1.15;letter-spacing:-.015em;margin:0 0 10px}
+h2{font-size:18px;line-height:1.35;margin:32px 0 8px}
+.head{text-align:center;margin:0 0 32px}
+.lead{font-size:17px;color:var(--muted);margin:0}
+.center{text-align:center}
+.overline{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin:0 0 12px}
+.card{background:var(--card);border:1px solid var(--hair);border-radius:20px;padding:28px 20px;margin:0 0 40px;text-align:center}
+.card>:last-child{margin-bottom:0}
+.btn{display:flex;align-items:center;justify-content:center;width:100%;max-width:340px;height:52px;margin:12px auto 0;padding:0 24px;border:1px solid transparent;border-radius:999px;font-family:inherit;font-size:17px;font-weight:600;text-decoration:none;cursor:pointer}
+.head .btn{margin-top:24px}
+.primary{background:var(--accent);color:var(--onaccent)}
+.secondary{background:transparent;color:var(--ink);border-color:var(--hair)}
+.btn[aria-disabled="true"],.btn:disabled{opacity:.4;pointer-events:none;cursor:default}
+.hint{font-size:14px;line-height:1.5;color:var(--muted);max-width:340px;margin:20px auto 0}
+.code{font-size:clamp(40px,13vw,56px);font-weight:800;letter-spacing:.12em;padding-left:.12em;font-variant-numeric:tabular-nums;line-height:1;margin:0 0 12px;color:var(--ink);user-select:all;-webkit-user-select:all}
+.code.missing{font-size:18px;font-weight:500;letter-spacing:0;padding-left:0;color:var(--muted)}
+.shot{display:block;width:100%;max-width:300px;border-radius:28px;margin:32px auto 0}
+.list{list-style:none;margin:0;padding:0;border-top:1px solid var(--hair)}
+.list li{padding:14px 0;border-bottom:1px solid var(--hair)}
+.list strong{display:block;font-weight:600}
+.list span{display:block;color:var(--muted)}
+.prose h2:first-child{margin-top:0}
+.prose ul{margin:0 0 12px;padding-left:1.2em}
+.prose li{margin:0 0 8px}
+.facts{margin:0}
+.facts dt{font-size:13px;color:var(--muted);margin:20px 0 2px}
+.facts dt:first-child{margin-top:0}
+.facts dd{margin:0}
+.facts dd+dd{margin-top:10px}
+.en{margin-top:56px;padding-top:32px;border-top:1px solid var(--hair)}
+.en-title{font-size:22px;line-height:1.25;margin:0 0 6px}
+footer{margin-top:56px;padding-top:20px;border-top:1px solid var(--hair);color:var(--muted);font-size:13px;text-align:center}
+footer a{color:var(--muted)}
+@media (max-width:599px){footer .sep{display:none}footer a{display:block;margin-top:4px}}
+</style>
+</head>
+<body>
+<main>
+<header class="top">
+  <a class="brand" href="/"><span class="mark" aria-hidden="true"></span><strong>SlopeTrack</strong></a>
+  <nav aria-label="Seiten"><a href="/support.html">Support</a><a href="/android/privacy.html">Datenschutz</a><a href="/terms.html">Nutzung</a><a href="/imprint.html">Impressum</a></nav>
+</header>
+
+<div class="head">
+  <h1>Konto und Daten löschen</h1>
+  <p class="lead">SlopeTrack – Ski-Tracker</p>
+</div>
+
+<article id="konto-loeschen" class="prose">
+    <p>Für die App „SlopeTrack – Ski-Tracker“ von Torch Technology (TORCHTECHNOLOGY LTD).</p>
+  <p><strong>Ohne App:</strong> Schreib von der E-Mail-Adresse deines Kontos an <a href="mailto:hello@torchtechnology.de?subject=Konto%20l%C3%B6schen">hello@torchtechnology.de</a>, Betreff „Konto löschen“. Mit Google-Anmeldung ist das die Adresse deines Google-Kontos. Erreichst du diese Adresse nicht mehr, schreib uns trotzdem, dann klären wir kurz, dass das Konto dir gehört. Wir löschen dein Konto innerhalb von 7 Tagen und bestätigen es dir per E-Mail. Du musst die App dafür nicht installieren.</p>
+  <p><strong>In der App:</strong> Einstellungen › Konto › Konto löschen. Das geht sofort.</p>
+  <p><strong>Dein Abo zuerst:</strong> Das Löschen beendet kein laufendes Abo. Kündige es vorher dort, wo du es abgeschlossen hast: bei <a href="https://play.google.com/store/account/subscriptions">Google Play</a> oder in den Einstellungen deines Apple-Accounts.</p>
+  <p><strong>Das wird gelöscht:</strong> dein Login (E-Mail-Adresse, Name, Anmelde-ID), dein Profil mit Profilbild, Land und Hausberg, alle Skitage und Spuren, Freundschaften, Blockierungen, Mitgliedschaften in Gruppen und Duellen, Challenge-Teilnahmen, deine Chat-Nachrichten und Meldungen, an denen du beteiligt bist.</p>
+  <p><strong>Das bleibt:</strong></p>
+  <ul>
+    <li>Gruppen und Duelle, die du gegründet hast, bleiben für die anderen Mitglieder bestehen, ohne Bezug zu dir.</li>
+    <li>Bei unserem Dienstleister RevenueCat bleibt deine Kaufhistorie unter deiner bisherigen Nutzer-ID als Nachweis der Käufe. Sie ist danach keinem Konto mehr zugeordnet. Deine Käufe selbst liegen bei Google Play bzw. Apple.</li>
+    <li>E-Mails zu Meldungen, die dich betreffen, bewahren wir auf, solange wir sie zum Schutz vor Missbrauch brauchen.</li>
+    <li>Server-Logs unseres Dienstleisters werden nach kurzer Zeit gelöscht.</li>
+    <li>Löschst du ohne die App, bleiben die Daten auf deinem Handy, bis du die App deinstallierst.</li>
+  </ul>
+</article>
+
+<section id="delete-account" class="en prose" lang="en">
+<div class="head">
+  <p class="overline">English</p>
+  <h2 class="en-title">Delete your account and data</h2>
+  <p class="lead">SlopeTrack – Ski Tracker</p>
+</div>
+    <p>For the app “SlopeTrack – Ski Tracker” by Torch Technology (TORCHTECHNOLOGY LTD).</p>
+  <p><strong>Without the app:</strong> email <a href="mailto:hello@torchtechnology.de?subject=Delete%20account">hello@torchtechnology.de</a> from your account’s email address with the subject “Delete account”. If you sign in with Google, that’s your Google account address. If you can no longer reach that address, write to us anyway and we’ll quickly confirm the account is yours. We delete your account within 7 days and confirm by email. You don’t need to install the app.</p>
+  <p><strong>In the app:</strong> Settings › Account › Delete account. It takes effect immediately.</p>
+  <p><strong>Your subscription first:</strong> deleting your account doesn’t end a running subscription. Cancel it first where you took it out: in <a href="https://play.google.com/store/account/subscriptions">Google Play</a> or in your Apple Account settings.</p>
+  <p><strong>What gets deleted:</strong> your login (email address, name, sign-in ID), your profile with profile photo, country and home resort, all ski days and tracks, friendships, blocks, group and duel memberships, challenge entries, your chat messages and any reports involving you.</p>
+  <p><strong>What stays:</strong></p>
+  <ul>
+    <li>Groups and duels you created stay for the other members, with no link to you.</li>
+    <li>Our service provider RevenueCat keeps your purchase history under your former user ID as a record of the purchases. It’s no longer linked to any account. Your purchases themselves stay with Google Play or Apple.</li>
+    <li>We keep emails about reports involving you for as long as we need them to protect users from abuse.</li>
+    <li>Our provider’s server logs are deleted after a short time.</li>
+    <li>If you delete without the app, the data on your phone stays there until you uninstall the app.</li>
+  </ul>
+</section>
+
+<footer><span>© 2026 TORCHTECHNOLOGY LTD</span><span class="sep" aria-hidden="true"> · </span><a href="mailto:hello@torchtechnology.de">hello@torchtechnology.de</a></footer>
+</main>
+</body>
+</html>
