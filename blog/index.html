@@ -59,6 +59,10 @@ if(/[?&]lang=en\b/.test(location.search)||(!/[?&]lang=de\b/.test(location.search
   document.documentElement.lang='en';
   document.querySelectorAll('[data-en]').forEach(function(el){el.textContent=el.dataset.en;});
 }
+// Android: the top bar button leads to Google Play.
+if(/Android/i.test(navigator.userAgent)){
+  document.querySelectorAll('a.cta').forEach(function(a){a.href='https://play.google.com/store/apps/details?id=de.torchtechnology.slopetrack';});
+}
 </script>
 </body>
 </html>
