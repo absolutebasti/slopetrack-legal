@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="color-scheme" content="dark">
+<meta name="theme-color" content="#0B0C0E">
+<title>SlopeTrack laden – Ski-Tracker</title>
+<meta name="robots" content="noindex">
+<meta name="description" content="SlopeTrack misst deinen Skitag: Top-Speed, Höhenmeter und jede Abfahrt, automatisch.">
+<meta property="og:title" content="SlopeTrack – Ski-Tracker"><meta property="og:image" content="https://slopetrack.torchtechnology.de/img/og.jpg">
+<link rel="icon" href="/img/apple-touch-icon.png">
+<link rel="apple-touch-icon" href="/img/apple-touch-icon.png">
+<link rel="preload" as="image" href="/img/app/de/live.webp">
+<style>
+:root{--bg:#0B0C0E;--ink:#F4F1EA;--muted:#A9ABB2;--accent:#E3C88C;--hair:#2A2D33}
+*{box-sizing:border-box}
+html{background:var(--bg);-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.5 -apple-system,BlinkMacSystemFont,Inter,"Segoe UI",Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased;text-align:center}
+main{max-width:520px;margin:0 auto;padding:max(20px,env(safe-area-inset-top)) 20px calc(24px + env(safe-area-inset-bottom))}
+.brand{display:inline-flex;align-items:center;gap:10px;color:var(--ink);text-decoration:none;margin:4px 0 22px}
+.brand strong{font-size:18px;letter-spacing:.02em}
+.mark{width:28px;height:28px;border-radius:8px;flex:none;background:#F4F1EA url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1024 1024'%3E%3Cpath d='M212 592 L416 312 L812 752' fill='none' stroke='%230B0C0E' stroke-width='96' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/100% no-repeat}
+h1{font-size:clamp(30px,8.5vw,40px);line-height:1.1;letter-spacing:-.02em;margin:0 0 10px}
+.lead{font-size:17px;color:var(--muted);margin:0 auto 22px;max-width:400px}
+.badge{display:block;width:max-content;margin:0 auto}
+.badge img{display:block;width:auto;height:60px}
+.badge.small img{height:44px}
+.badge.small{margin-top:12px}
+.free{font-size:14px;color:var(--muted);margin:10px 0 0}
+.shot{display:block;width:72%;max-width:300px;height:auto;border-radius:28px;margin:28px auto 0;border:1px solid var(--hair)}
+footer{margin-top:28px;color:var(--muted);font-size:13px}
+footer a{color:var(--muted);margin:0 8px}
+</style>
+</head>
+<body>
+<main>
+  <a class="brand" href="/"><span class="mark" aria-hidden="true"></span><strong>SlopeTrack</strong></a>
+  <h1 data-en="Your ski day.<br>Tracked live.">Dein Skitag.<br>Live getrackt.</h1>
+  <p class="lead" data-en="Top speed, vertical and every run, automatically. And who in your group was fastest.">Top-Speed, Höhenmeter und jede Abfahrt, automatisch. Und wer von euch schneller war.</p>
+  <a class="badge" id="first" href="https://apps.apple.com/app/id6827483140"><img id="firstimg" src="/img/badges/app-store-de.svg" alt="Laden im App Store" width="180" height="60"></a>
+  <p class="free" data-en="Free to download">Kostenlos laden</p>
+  <img class="shot" id="shot" src="/img/app/de/live.webp" alt="Live-Ansicht: 73 km/h Top-Speed, Tempo und Höhenmeter" width="640" height="1391">
+  <a class="badge small" id="second" href="https://play.google.com/store/apps/details?id=de.torchtechnology.slopetrack"><img id="secondimg" src="/img/badges/google-play-de.png" alt="Jetzt bei Google Play" width="148" height="44"></a>
+  <footer><a href="/imprint.html" data-en="Imprint">Impressum</a><a href="/privacy.html" data-en="Privacy">Datenschutz</a></footer>
+</main>
+<script>
+(function(){
+  var p=new URLSearchParams(location.search);
+  var q=p.get('lang');
+  var en=q?q==='en':!/^de\b/i.test(navigator.language||'de');
+  var l=en?'en':'de';
+  document.documentElement.lang=l;
+  if(en){
+    document.title='Get SlopeTrack – Ski tracker';
+    document.querySelectorAll('[data-en]').forEach(function(el){el.innerHTML=el.dataset.en;});
+    document.getElementById('shot').alt='Live view: 73 km/h top speed, current speed and vertical';
+  }
+  document.getElementById('shot').src='/img/app/'+l+'/live.webp';
+  var ios='https://apps.apple.com/app/id6827483140',play='https://play.google.com/store/apps/details?id=de.torchtechnology.slopetrack';
+  // Campaign tag from the ad (?ct=meta_tirol_video): App Store gets pt+ct, Google Play the same as install referrer.
+  var ct=(p.get('ct')||p.get('utm_campaign')||'').replace(/[^\w.-]/g,'').slice(0,40);
+  if(ct){ios+='?pt=129684961&ct='+ct+'&mt=8';play+='&referrer='+encodeURIComponent('utm_source=website&utm_medium=ad&utm_campaign='+ct);}
+  var A={href:ios,src:'/img/badges/app-store-'+l+'.svg',alt:en?'Download on the App Store':'Laden im App Store'};
+  var G={href:play,src:'/img/badges/google-play-'+l+'.png',alt:en?'Get it on Google Play':'Jetzt bei Google Play'};
+  var android=/Android/i.test(navigator.userAgent);
+  var f=android?G:A,s=android?A:G;
+  var a1=document.getElementById('first'),i1=document.getElementById('firstimg'),a2=document.getElementById('second'),i2=document.getElementById('secondimg');
+  a1.href=f.href;i1.src=f.src;i1.alt=f.alt;a2.href=s.href;i2.src=s.src;i2.alt=s.alt;
+})();
+</script>
+</body>
+</html>
