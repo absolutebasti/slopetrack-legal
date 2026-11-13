@@ -506,6 +506,14 @@ if(/Android/i.test(navigator.userAgent)){
   var pb=document.querySelector('#getbar .badge'),pi=pb&&pb.querySelector('img');
   if(pi){pb.href='https://play.google.com/store/apps/details?id=de.torchtechnology.slopetrack';pi.removeAttribute('data-badge');pi.setAttribute('data-play-badge','');pi.alt='Jetzt bei Google Play';pi.dataset.enAlt='Get it on Google Play';pi.dataset.deAlt='Jetzt bei Google Play';pi.width=148;pi.src='img/badges/google-play-'+(document.documentElement.lang==='en'?'en':'de')+'.png';}
 }
+// Campaign tag from ads (?ct=meta_tirol): App Store links carry pt+ct, so App Store Connect counts downloads per
+// campaign; Google Play links carry the same as install referrer (Play Console › acquisition by UTM campaign).
+(function(){
+  var p=new URLSearchParams(location.search),ct=(p.get('ct')||p.get('utm_campaign')||'').replace(/[^\w.-]/g,'').slice(0,40);
+  if(!ct)return;
+  document.querySelectorAll('a[href="https://apps.apple.com/app/id6827483140"]').forEach(function(a){a.href='https://apps.apple.com/app/id6827483140?pt=129684961&ct='+ct+'&mt=8';});
+  document.querySelectorAll('a[href="https://play.google.com/store/apps/details?id=de.torchtechnology.slopetrack"]').forEach(function(a){a.href+='&referrer='+encodeURIComponent('utm_source=website&utm_medium=ad&utm_campaign='+ct);});
+})();
 // Phone bar and desktop QR: shown while no page badge is on screen, so never at the same time as the hero or end badge.
 var bar=document.getElementById('getbar'),dock=document.getElementById('dock'),seen=new Set();
 if('IntersectionObserver' in window){
