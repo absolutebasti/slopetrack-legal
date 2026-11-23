@@ -105,12 +105,25 @@ video.fill.on{opacity:1}
 /* One store per phone, a little larger: iPhone/iPad → App Store, Android → Google Play. Computers keep both and the QR code. */
 [data-dev=ios] .badges a[href*="play.google.com"],[data-dev=android] .badges a[href*="apps.apple.com"]{display:none}
 [data-dev=ios] .badges .badge img,[data-dev=android] .badges .badge img{height:60px}
-/* Rating line under the hero text: the site workflow fills it daily from the German App Store and leaves it hidden
-   without enough real ratings. German page only (the numbers are the German store's), not on Android. */
-.rate{margin-top:14px;font-size:14px;line-height:20px;color:rgba(255,255,255,.84)}
-.rate .stars{margin-right:8px;letter-spacing:.08em;color:#E3C88C}
-.rate b{font-weight:600;color:#fff}
-html[lang=en] .rate,[data-dev=android] .rate{display:none}
+/* App Store rating under the hero text, in the look of the app's Kaufseite (PaywallRating: laurel, five gold stars,
+   „5,0 im App Store“ on a dark glass pill; founder 2026-11-23: no count). The site workflow fills in the German store's
+   average daily and leaves it hidden without enough real ratings. Like the Kaufseite: not on Android. */
+.rate{display:inline-flex;align-items:center;gap:10px;margin-top:18px;padding:7px 16px;border:1px solid rgba(255,255,255,.14);border-radius:999px;background:rgba(11,21,32,.55);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);color:#E3C88C}
+.rate[hidden],[data-dev=android] .rate{display:none}
+.rate .laurel{flex:none;width:18px;height:38px}
+.rate .laurel.r{transform:scaleX(-1)}
+.rate-in{display:flex;flex-direction:column;align-items:center;gap:3px}
+.stars{display:flex;gap:1px}
+.stars svg{width:16px;height:16px}
+.stars svg.off{opacity:.3}
+.rate .score{font-size:13.5px;line-height:17px;font-weight:600;color:var(--paper);white-space:nowrap}
+/* Phones: rating pill and store button centred under the text (founder 2026-11-23). The selector keeps the pill
+   hidden while it has no rating and on Android. Computers keep the text left and the download panel right. */
+@media (max-width:899px){
+  html:not([data-dev=android]) .hero .rate:not([hidden]){display:flex;width:-webkit-fit-content;width:fit-content;margin-left:auto;margin-right:auto}
+  .hero .get,.hero .badges{justify-content:center}
+  .hero .get-l{align-items:center}
+}
 /* The ad headline is longer than „Tracke jede Abfahrt.“: a little smaller on phones so it keeps two lines down to 320 px. */
 @media (max-width:899px){[data-hero=duel] .hero h1{font-size:clamp(34px,12.6vw,112px);font-size:clamp(34px,min(12.6vw,11svh),112px)}}
 
@@ -299,6 +312,8 @@ footer a:hover{color:var(--paper)}
 <script src="js/count.js" defer></script>
 </head>
 <body>
+<!-- Laurel and star of the rating pill, drawn like the app (paywall_design.dart _LaurelPainter, Icons.star_rounded). -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="laurel" viewBox="0 0 16 34" fill="currentColor"><path d="M12.14 33.49A17 17 0 0 1 11.16 2.3" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/><ellipse transform="translate(7.81 4.38) rotate(119.88)" cx="-3.38" rx="3.75" ry="1.7"/><ellipse transform="translate(2.97 10.54) rotate(93.24)" cx="-2.97" rx="3.3" ry="1.52"/><ellipse transform="translate(1.41 18.21) rotate(66.6)" cx="-2.56" rx="2.85" ry="1.35"/><ellipse transform="translate(3.45 25.78) rotate(39.96)" cx="-2.16" rx="2.4" ry="1.18"/><ellipse transform="translate(8.67 31.62) rotate(13.32)" cx="-1.75" rx="1.95" ry="1"/></symbol><symbol id="star" viewBox="0 0 24 24" fill="currentColor"><path d="M12 17.27l4.15 2.51c.76.46 1.69-.22 1.49-1.08l-1.1-4.72 3.67-3.18c.67-.58.31-1.68-.57-1.75l-4.83-.41-1.89-4.46c-.34-.81-1.5-.81-1.84 0L9.19 8.63l-4.83.41c-.88.07-1.24 1.17-.57 1.75l3.67 3.18-1.1 4.72c-.2.86.73 1.54 1.49 1.08L12 17.27z"/></symbol></svg>
 <header class="nav" id="nav">
   <div class="bar">
     <a class="logo" href="./" aria-label="SlopeTrack"><svg class="glyph" viewBox="0 0 1024 1024" aria-hidden="true"><path d="M212 592 L416 312 L812 752"/></svg><span>SLOPETRACK</span></a>
@@ -323,7 +338,7 @@ footer a:hover{color:var(--paper)}
       <p class="kicker" data-en="The ski tracker for iPhone, Apple Watch and Android">Ski-Tracker für iPhone, Apple Watch und Android</p>
       <h1 data-en="Track<br>every run.">Tracke jede<br>Abfahrt.</h1>
       <p class="lead" data-en="Top speed, vertical and runs, logged automatically.">Top-Speed, Höhenmeter und Abfahrten – automatisch aufgezeichnet.</p>
-      <p class="rate" id="rate"><span class="stars" aria-hidden="true">★★★★★</span><b>5,0</b> · 12 Bewertungen in Deutschland</p>
+      <div class="rate" id="rate"><svg class="laurel" viewBox="0 0 16 34" aria-hidden="true"><use href="#laurel"/></svg><span class="rate-in"><span class="stars" aria-hidden="true"><svg viewBox="0 0 24 24"><use href="#star"/></svg><svg viewBox="0 0 24 24"><use href="#star"/></svg><svg viewBox="0 0 24 24"><use href="#star"/></svg><svg viewBox="0 0 24 24"><use href="#star"/></svg><svg viewBox="0 0 24 24"><use href="#star"/></svg></span><span class="score" data-en="5.0 on the App Store">5,0 im App Store</span></span><svg class="laurel r" viewBox="0 0 16 34" aria-hidden="true"><use href="#laurel"/></svg></div><!-- /rate -->
     </div>
     <div class="get">
       <div class="get-l">
