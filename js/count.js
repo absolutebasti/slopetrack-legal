@@ -27,7 +27,8 @@
       capture_exceptions: false,
       mask_personal_data_properties: true
     });
-    window.posthog.register({ ct: ct, site_lang: document.documentElement.lang || '' });
+    window.posthog.register({ ct: ct, site_lang: document.documentElement.lang || '',
+      hero: document.documentElement.dataset.hero || '' });
   };
   document.head.appendChild(s);
   // Store badge clicks leave the page at once, so they go out immediately via sendBeacon.
